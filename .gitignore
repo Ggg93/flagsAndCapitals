@@ -6,4 +6,5 @@ desktop.ini
 ######################
 /target/
 /releases/
+/db/
 nbactions.xml

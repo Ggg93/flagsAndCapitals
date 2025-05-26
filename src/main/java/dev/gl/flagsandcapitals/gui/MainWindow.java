@@ -1,7 +1,14 @@
 package dev.gl.flagsandcapitals.gui;
 
+import dev.gl.flagsandcapitals.enums.MainWindowMode;
 import dev.gl.flagsandcapitals.utils.Configuration;
+import dev.gl.flagsandcapitals.utils.MainWindowListenersKeeper;
+import java.awt.event.KeyEvent;
+import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -9,10 +16,16 @@ import javax.swing.ImageIcon;
  */
 public class MainWindow extends javax.swing.JFrame {
 
+    private MainWindowMode mainWindowMode = MainWindowMode.IDLE;
+    private MainWindowListenersKeeper listenersKeeper;
+
     public MainWindow() {
         initComponents();
         mainPanel.add(new MainMenuPanel());
-        
+
+        listenersKeeper = new MainWindowListenersKeeper(this);
+        bindActionsToButtons();
+        createKeyBindings();
         setupThisWindow();
     }
 
@@ -76,5 +89,37 @@ public class MainWindow extends javax.swing.JFrame {
 
         // place window in the middle of the screen
         this.setLocationRelativeTo(null);
+
+        // hide this button for idle mode
+        mainMenuButton.setVisible(false);
+    }
+
+    public void setMainWindowMode(MainWindowMode mode) {
+        if (mainWindowMode == mode) {
+            return;
+        }
+
+        if (mode == MainWindowMode.PLAYING) {
+            mainMenuButton.setVisible(true);
+            mainMenuButton.setEnabled(true);
+        }
+
+        if (mode == MainWindowMode.IDLE) {
+            mainMenuButton.setVisible(false);
+            mainMenuButton.setEnabled(false);
+        }
+    }
+
+    private void bindActionsToButtons() {
+        exitButton.addActionListener(listenersKeeper.getClosingMainWindowListener());
+    }
+    
+    private void createKeyBindings() {
+        InputMap inputMap = this.getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        ActionMap actionMap = this.getRootPane().getActionMap();
+        
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
+        
+        actionMap.put("close", listenersKeeper.getClosingMainWindowListener());
     }
 }

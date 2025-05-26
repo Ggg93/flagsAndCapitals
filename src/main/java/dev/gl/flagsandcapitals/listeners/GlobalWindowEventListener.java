@@ -15,6 +15,7 @@ import javax.swing.JFrame;
  * @author gl
  */
 public class GlobalWindowEventListener implements AWTEventListener {
+
     private static Logger logger = Logging.getLocalLogger(HyperConnection.class);
 
     @Override
