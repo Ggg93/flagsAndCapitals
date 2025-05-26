@@ -1,0 +1,6 @@
+dev\gl\flagsandcapitals\gui\GameBoardPanel.class
+dev\gl\flagsandcapitals\gui\MainMenuPanel.class
+dev\gl\flagsandcapitals\utils\EntryPoint.class
+dev\gl\flagsandcapitals\FlagsAndCapitals.class
+dev\gl\flagsandcapitals\gui\MainWindow.class
+dev\gl\flagsandcapitals\utils\Configuration.class

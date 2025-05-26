@@ -1,0 +1,9 @@
+# OS generated files #
+######################
+desktop.ini
+
+# project files #
+######################
+/target/
+/releases/
+nbactions.xml
