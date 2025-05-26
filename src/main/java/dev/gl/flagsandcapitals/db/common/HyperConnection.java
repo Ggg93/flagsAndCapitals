@@ -107,6 +107,8 @@ public class HyperConnection {
             if (!resultSet.isBeforeFirst()) {
                 // if 'settings' is empty, insert a new row there
                 stmt.executeUpdate("INSERT INTO settings VALUES (0, 'lang', null, null, 'en')");
+                stmt.executeUpdate("INSERT INTO settings VALUES (1, 'gameMode', null, null, 'flags')");
+                stmt.executeUpdate("INSERT INTO settings VALUES (2, 'difficulty', null, null, 'medium')");
                 logger.config("Insert first row in the \"settings\" table");
             }
 

@@ -1,6 +1,7 @@
 package dev.gl.flagsandcapitals.gui;
 
 import dev.gl.flagsandcapitals.utils.Configuration;
+import javax.swing.JButton;
 
 /**
  *
@@ -12,6 +13,22 @@ public class MainMenuPanel extends javax.swing.JPanel {
         initComponents();
     }
 
+    public JButton getAboutButton() {
+        return aboutButton;
+    }
+
+    public JButton getNewGameButton() {
+        return newGameButton;
+    }
+
+    public JButton getSettingsButton() {
+        return settingsButton;
+    }
+
+    public JButton getStatisticsButton() {
+        return statisticsButton;
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -41,7 +58,7 @@ public class MainMenuPanel extends javax.swing.JPanel {
         add(buttonsPanel, new java.awt.GridBagConstraints());
     }// </editor-fold>//GEN-END:initComponents
 
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aboutButton;
     private javax.swing.JPanel buttonsPanel;

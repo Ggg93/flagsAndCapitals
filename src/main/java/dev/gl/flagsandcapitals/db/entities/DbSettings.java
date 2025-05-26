@@ -5,6 +5,7 @@ import dev.gl.flagsandcapitals.utils.logging.Logging;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,7 +15,9 @@ import java.util.logging.Logger;
  * @author gl
  */
 public class DbSettings {
+
     private static final Logger LOGGER = Logging.getLocalLogger(DbSettings.class);
+
     private Integer id;
     private String parameter;
     private Boolean valBool;
@@ -68,12 +71,12 @@ public class DbSettings {
     public void setValString(String valString) {
         this.valString = valString;
     }
-    
+
     public static Map<String, DbSettings> getAllSettings(HyperConnection con) {
         if (con == null) {
             return null;
         }
-        
+
         Map<String, DbSettings> settings = new HashMap<>();
         try (Statement stmt = con.getCon().createStatement()) {
             StringBuilder sb = new StringBuilder();
@@ -81,20 +84,20 @@ public class DbSettings {
             ResultSet rs = stmt.executeQuery(sb.toString());
             while (rs.next()) {
                 DbSettings entry = new DbSettings(rs.getInt(1),
-                    rs.getString(2),
-                    rs.getBoolean(3),
-                    rs.getInt(4),
-                    rs.getString(5));
-                
+                        rs.getString(2),
+                        rs.getBoolean(3),
+                        rs.getInt(4),
+                        rs.getString(5));
+
                 settings.put(entry.getParameter(), entry);
             }
-            
+
             LOGGER.info("read settings from db: " + settings.size());
-            
+
         } catch (Exception e) {
-           LOGGER.log(Level.SEVERE, null, e);
+            LOGGER.log(Level.SEVERE, null, e);
         }
-        
+
         return settings;
     }
 
@@ -123,6 +126,15 @@ public class DbSettings {
         return entry;
     }
 
+    public static int updateRows(HyperConnection con, List<DbSettings> entries) {
+        int affectedRows = entries.stream()
+                .map(entry -> updateRow(con, entry))
+                .mapToInt(Integer::intValue)
+                .sum();
+        LOGGER.log(Level.FINE, affectedRows + " rows updated");
+        return affectedRows;
+    }
+
     public static int updateRow(HyperConnection con, DbSettings entry) {
         int affectedRows = 0;
         try (Statement stmt = con.getCon().createStatement()) {
@@ -130,7 +142,7 @@ public class DbSettings {
             sb.append("UPDATE SETTINGS ");
             sb.append("SET VAL_BOOL = ").append(entry.valBool);
             sb.append(", VAL_INT = ").append(entry.valInt);
-            sb.append(", VAL_STRING = ").append(entry.valString).append(" ");
+            sb.append(", VAL_STRING = '").append(entry.valString).append("' ");
             sb.append("WHERE ID = ").append(entry.id);
             affectedRows = stmt.executeUpdate(sb.toString());
         } catch (Exception e) {

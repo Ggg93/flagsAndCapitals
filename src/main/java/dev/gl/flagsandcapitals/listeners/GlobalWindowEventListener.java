@@ -8,6 +8,7 @@ import java.awt.event.AWTEventListener;
 import java.awt.event.WindowEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 /**
@@ -21,6 +22,12 @@ public class GlobalWindowEventListener implements AWTEventListener {
     @Override
     public void eventDispatched(AWTEvent event) {
         if (event instanceof WindowEvent && event.getID() == WindowEvent.WINDOW_CLOSING) {
+            if (event.getSource() instanceof JDialog) {
+                JDialog dialog = (JDialog) event.getSource();
+                dialog.dispose();
+                return;
+            }
+            
             JFrame window = (JFrame) event.getSource();
             if (window instanceof MainWindow) {
                 try {

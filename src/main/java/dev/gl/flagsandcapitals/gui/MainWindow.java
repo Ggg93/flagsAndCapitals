@@ -18,10 +18,12 @@ public class MainWindow extends javax.swing.JFrame {
 
     private MainWindowMode mainWindowMode = MainWindowMode.IDLE;
     private MainWindowListenersKeeper listenersKeeper;
+    private MainMenuPanel mainMenuPanel;
 
     public MainWindow() {
         initComponents();
-        mainPanel.add(new MainMenuPanel());
+        mainMenuPanel = new MainMenuPanel();
+        mainPanel.add(mainMenuPanel);
 
         listenersKeeper = new MainWindowListenersKeeper(this);
         bindActionsToButtons();
@@ -112,6 +114,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void bindActionsToButtons() {
         exitButton.addActionListener(listenersKeeper.getClosingMainWindowListener());
+        mainMenuPanel.getSettingsButton().addActionListener(listenersKeeper.getSettingsDialogListener());
     }
     
     private void createKeyBindings() {
@@ -119,7 +122,9 @@ public class MainWindow extends javax.swing.JFrame {
         ActionMap actionMap = this.getRootPane().getActionMap();
         
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "settings");
         
         actionMap.put("close", listenersKeeper.getClosingMainWindowListener());
+        actionMap.put("settings", listenersKeeper.getSettingsDialogListener());
     }
 }
