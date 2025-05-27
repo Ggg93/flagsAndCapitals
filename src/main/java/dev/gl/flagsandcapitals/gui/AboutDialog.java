@@ -75,7 +75,7 @@ public class AboutDialog extends javax.swing.JDialog {
         okButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("About");
+        setTitle(Configuration.getResourceBundle().getString("title")); // NOI18N
         setMinimumSize(new java.awt.Dimension(300, 280));
         setPreferredSize(new java.awt.Dimension(300, 280));
         setResizable(false);
