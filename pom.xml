@@ -11,7 +11,16 @@
         <maven.compiler.release>21</maven.compiler.release>
         <exec.mainClass>dev.gl.flagsandcapitals.FlagsAndCapitals</exec.mainClass>
     </properties>
-        <dependencies>
+    <build>
+        <finalName>FlagsAndCapitals</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources> 
+    </build>
+    <dependencies>
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
