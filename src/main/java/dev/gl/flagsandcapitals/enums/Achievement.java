@@ -1,6 +1,9 @@
 package dev.gl.flagsandcapitals.enums;
 
 import dev.gl.flagsandcapitals.utils.Configuration;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -21,11 +24,25 @@ public enum Achievement {
     private int code;
     private String name;
     private String localizedName;
+    private static Map<Integer, Achievement> achievementByCode;
 
     private Achievement(int code, String name, String localizedName) {
         this.code = code;
         this.name = name;
         this.localizedName = localizedName;
+    }
+    
+    static {
+        achievementByCode = new HashMap<>();
+        Arrays.asList(Achievement.values()).stream()
+                .forEach(achievement -> {
+                    achievementByCode.put(achievement.code, achievement);
+                });
+    }
+
+
+    public static Achievement getAchievementByCode(Integer code) {
+        return achievementByCode.get(code);
     }
 
     public int getCode() {

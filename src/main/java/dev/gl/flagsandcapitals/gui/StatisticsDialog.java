@@ -1,6 +1,7 @@
 package dev.gl.flagsandcapitals.gui;
 
 import dev.gl.flagsandcapitals.db.common.HyperConnection;
+import dev.gl.flagsandcapitals.db.entities.DbAchievements;
 import dev.gl.flagsandcapitals.db.entities.DbGames;
 import dev.gl.flagsandcapitals.listeners.OkDisposingAction;
 import dev.gl.flagsandcapitals.models.UneditableTableModel;
@@ -118,10 +119,19 @@ public class StatisticsDialog extends javax.swing.JDialog {
                 .filter(game -> game.getIsWin())
                 .count();
         Integer defeats = ttlGames - wins;
+        
+        // calculate achievements
+        Map<Integer, DbAchievements> achievementsMap = DbAchievements.getAllRows(con);
+        Integer achievedGoals = (int) achievementsMap.values().stream()
+                .filter(a -> a.getAchievedDate() != null)
+                .count();
+        String achievementsStats = achievedGoals + " / " + achievementsMap.size();
+        
         Object[][] stats = {
             {Configuration.getResourceBundle().getString("statsTtlGames"), ttlGames},
             {Configuration.getResourceBundle().getString("statsWins"), wins},
-            {Configuration.getResourceBundle().getString("statsDefeats"), defeats}
+            {Configuration.getResourceBundle().getString("statsDefeats"), defeats},
+            {Configuration.getResourceBundle().getString("statsAchievements"), achievementsStats}
         };
         return stats;
     }
