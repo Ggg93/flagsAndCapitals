@@ -16,7 +16,8 @@ public enum GameMode {
     private Integer code;
     private String name;
     private String resourceBundleKey;
-    private static Map<String, GameMode> gameModeByCode;
+    private static Map<String, GameMode> gameModeByName;
+    private static Map<Integer, GameMode> gameModeByCode;
 
     private GameMode(Integer code, String name, String resourceBundleKey) {
         this.code = code;
@@ -25,13 +26,21 @@ public enum GameMode {
     }
 
     static {
+        gameModeByName = new HashMap<>();
         gameModeByCode = new HashMap<>();
         Arrays.asList(GameMode.values()).stream()
-                .forEach(mode -> gameModeByCode.put(mode.name, mode));
+                .forEach(mode -> {
+                    gameModeByName.put(mode.name, mode);
+                    gameModeByCode.put(mode.code, mode);
+                });
+    }
+
+    public static GameMode getGameModeByName(String name) {
+        return gameModeByName.getOrDefault(name, GameMode.FLAGS);
     }
     
-    public static GameMode getGameModeByCode(String name) {
-        return gameModeByCode.getOrDefault(name, GameMode.FLAGS);
+    public static GameMode getGameModeByCode(Integer code) {
+        return gameModeByCode.getOrDefault(code, GameMode.FLAGS);
     }
 
     @Override
@@ -50,5 +59,5 @@ public enum GameMode {
     public String getName() {
         return name;
     }
-    
+
 }

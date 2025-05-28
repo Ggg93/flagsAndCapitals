@@ -35,7 +35,7 @@ public class Configuration {
         lang = Language.getLanguageByIsoCode(installedLanguage.getValString());
         
         DbSettings installedGameMode = allSettings.get("gameMode");
-        gameMode = GameMode.getGameModeByCode(installedGameMode.getValString());
+        gameMode = GameMode.getGameModeByName(installedGameMode.getValString());
         
         DbSettings installedDifficulty = allSettings.get("difficulty");
         difficulty = Difficulty.getDifficultyByCode(installedDifficulty.getValString());

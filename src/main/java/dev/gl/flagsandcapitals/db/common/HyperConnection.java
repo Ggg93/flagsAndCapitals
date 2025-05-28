@@ -135,6 +135,7 @@ public class HyperConnection {
                             id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                             game_mode_id INT NOT NULL,
                             region_id INT NOT NULL,
+                            is_win BOOLEAN,
                             score INT,
                             mistakes INT,
                             keys_used INT,

@@ -1,6 +1,9 @@
 package dev.gl.flagsandcapitals.enums;
 
 import dev.gl.flagsandcapitals.utils.Configuration;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -18,11 +21,25 @@ public enum Region {
     private Integer code;
     private String name;
     private String localizedName;
+    private static Map<Integer, Region> regionByCode;
 
     private Region(Integer code, String name, String localizedName) {
         this.code = code;
         this.name = name;
         this.localizedName = localizedName;
+    }
+
+    static {
+        regionByCode = new HashMap<>();
+        Arrays.asList(Region.values()).stream()
+                .forEach(region -> {
+                    regionByCode.put(region.code, region);
+                });
+    }
+
+
+    public static Region getRegionByCode(Integer code) {
+        return regionByCode.get(code);
     }
 
     public Integer getCode() {

@@ -33,6 +33,7 @@ public class AboutDialog extends javax.swing.JDialog {
         super(parent, modal);
         okButtonAction = new OkDisposingAction(this);
         initComponents();
+        setupIcon();
         this.setLocationRelativeTo(null);
         attachListenerToOkButton();
         bindKeyListenersToOkButton();
@@ -349,5 +350,10 @@ public class AboutDialog extends javax.swing.JDialog {
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "ok");
         
         actionMap.put("ok", okButtonAction);
+    }
+    
+    private void setupIcon() {
+        ImageIcon icon = new ImageIcon(this.getClass().getClassLoader().getResource("images/icons8-map-40.png"));
+        this.setIconImage(icon.getImage());
     }
 }

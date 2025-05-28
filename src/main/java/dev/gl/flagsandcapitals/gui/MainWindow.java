@@ -116,6 +116,7 @@ public class MainWindow extends javax.swing.JFrame {
         exitButton.addActionListener(listenersKeeper.getClosingMainWindowListener());
         mainMenuPanel.getSettingsButton().addActionListener(listenersKeeper.getSettingsDialogListener());
         mainMenuPanel.getAboutButton().addActionListener(listenersKeeper.getAboutDialogListener());
+        mainMenuPanel.getStatisticsButton().addActionListener(listenersKeeper.getStatisticsDialogListener());
     }
     
     private void createKeyBindings() {
@@ -123,11 +124,13 @@ public class MainWindow extends javax.swing.JFrame {
         ActionMap actionMap = this.getRootPane().getActionMap();
         
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "settings");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0), "about");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "settings");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "stats");
         
         actionMap.put("close", listenersKeeper.getClosingMainWindowListener());
         actionMap.put("settings", listenersKeeper.getSettingsDialogListener());
         actionMap.put("about", listenersKeeper.getAboutDialogListener());
+        actionMap.put("stats", listenersKeeper.getStatisticsDialogListener());
     }
 }
