@@ -28,6 +28,10 @@ public class MainMenuPanel extends javax.swing.JPanel {
     public JButton getStatisticsButton() {
         return statisticsButton;
     }
+
+    public JButton getAchievementsButton() {
+        return achievementsButton;
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

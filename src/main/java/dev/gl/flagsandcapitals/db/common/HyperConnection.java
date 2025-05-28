@@ -10,7 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -177,6 +179,12 @@ public class HyperConnection {
 
             LOGGER.config("Insert first " + affectedRows.length + " rows in the \"achievements\" table");
         }
+        
+//        LocalDate ld = LocalDate.now();
+//        PreparedStatement stmt2 = con.prepareStatement("UPDATE ACHIEVEMENTS SET achieved_date = ? WHERE code = ?");
+//        stmt2.setDate(1, java.sql.Date.valueOf(ld));
+//        stmt2.setInt(2, 1);
+//        stmt2.executeUpdate();
     }
 
     private void createSettingsTable() throws SQLException {

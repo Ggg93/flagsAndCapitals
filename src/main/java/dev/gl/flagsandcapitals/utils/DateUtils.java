@@ -15,6 +15,6 @@ public class DateUtils {
             return null;
         }
 
-        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return date.toLocalDate();
     }
 }
