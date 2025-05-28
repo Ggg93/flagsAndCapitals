@@ -43,6 +43,10 @@ public enum GameMode {
         return Configuration.getResourceBundle().getString(resourceBundleKey);
     }
 
+    public Integer getCode() {
+        return code;
+    }
+
     public String getName() {
         return name;
     }
