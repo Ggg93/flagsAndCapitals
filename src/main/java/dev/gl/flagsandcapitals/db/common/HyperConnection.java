@@ -192,10 +192,37 @@ public class HyperConnection {
         stmt.executeUpdate(query);
 
         if (isTableEmpty("settings")) {
-            stmt.executeUpdate("INSERT INTO settings (parameter, val_bool, val_int, val_string) VALUES ('lang', null, null, 'en')");
-            stmt.executeUpdate("INSERT INTO settings (parameter, val_bool, val_int, val_string) VALUES ('gameMode', null, null, 'flags')");
-            stmt.executeUpdate("INSERT INTO settings (parameter, val_bool, val_int, val_string) VALUES ('difficulty', null, null, 'medium')");
-            LOGGER.config("Insert first rows in the \"settings\" table");
+            int[] affectedRows = null;
+            String sql = """ 
+                         INSERT INTO settings 
+                         (parameter, val_bool, val_int, val_string) 
+                         VALUES (?, ?, ?, ?)
+                         """;
+            try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+                pstmt.setString(1, "lang");
+                pstmt.setBoolean(2, false);
+                pstmt.setInt(3, 0);
+                pstmt.setString(4, "en");
+                pstmt.addBatch();
+
+                pstmt.setString(1, "gameMode");
+                pstmt.setBoolean(2, false);
+                pstmt.setInt(3, 0);
+                pstmt.setString(4, "flags");
+                pstmt.addBatch();
+
+                pstmt.setString(1, "difficulty");
+                pstmt.setBoolean(2, false);
+                pstmt.setInt(3, 0);
+                pstmt.setString(4, "medium");
+                pstmt.addBatch();
+
+                affectedRows = pstmt.executeBatch();
+
+            } catch (Exception e) {
+                LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+            }
+            LOGGER.config("Insert first " + affectedRows.length + " rows in the \"settings\" table");
         }
     }
 
