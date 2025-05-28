@@ -7,10 +7,10 @@
       <ResourceString bundle="dict.properties" key="title" replaceFormat="Configuration.getResourceBundle().getString(&quot;{key}&quot;)"/>
     </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[300, 300]"/>
+      <Dimension value="[380, 320]"/>
     </Property>
     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[300, 300]"/>
+      <Dimension value="[380, 320]"/>
     </Property>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
@@ -123,7 +123,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
             <Property name="columns" type="int" value="1"/>
-            <Property name="rows" type="int" value="5"/>
+            <Property name="rows" type="int" value="6"/>
           </Layout>
           <SubComponents>
             <Container class="javax.swing.JPanel" name="jPanel1">
@@ -224,6 +224,27 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="trophyLinkLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="jLabel5"/>
+                    <Property name="horizontalTextPosition" type="int" value="2"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="jPanel8">
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
+                <Property name="alignment" type="int" value="0"/>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="jLabel9">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="dict.properties" key="aboutFlagsLinkLabel" replaceFormat="Configuration.getResourceBundle().getString(&quot;{key}&quot;)"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="flagsLinkLabel">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="jLabel5"/>
                     <Property name="horizontalTextPosition" type="int" value="2"/>

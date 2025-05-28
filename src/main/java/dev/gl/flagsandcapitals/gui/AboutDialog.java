@@ -44,6 +44,7 @@ public class AboutDialog extends javax.swing.JDialog {
         setHeartSourceLink();
         setKeySourceLink();
         setTrophySourceLink();
+        setFlagsSourceLink();
         LOGGER.fine("AboutDialog opened");
     }
 
@@ -76,13 +77,16 @@ public class AboutDialog extends javax.swing.JDialog {
         jPanel7 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         trophyLinkLabel = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        flagsLinkLabel = new javax.swing.JLabel();
         bottomPanel = new javax.swing.JPanel();
         okButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(Configuration.getResourceBundle().getString("title")); // NOI18N
-        setMinimumSize(new java.awt.Dimension(300, 300));
-        setPreferredSize(new java.awt.Dimension(300, 300));
+        setMinimumSize(new java.awt.Dimension(380, 320));
+        setPreferredSize(new java.awt.Dimension(380, 320));
         setResizable(false);
 
         mainPanel.setLayout(new java.awt.BorderLayout());
@@ -115,7 +119,7 @@ public class AboutDialog extends javax.swing.JDialog {
 
         mainPanel.add(upperSubpanel, java.awt.BorderLayout.CENTER);
 
-        linksPanel.setLayout(new java.awt.GridLayout(5, 1));
+        linksPanel.setLayout(new java.awt.GridLayout(6, 1));
 
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -172,6 +176,17 @@ public class AboutDialog extends javax.swing.JDialog {
 
         linksPanel.add(jPanel7);
 
+        jPanel8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel9.setText(Configuration.getResourceBundle().getString("aboutFlagsLinkLabel")); // NOI18N
+        jPanel8.add(jLabel9);
+
+        flagsLinkLabel.setText("jLabel5");
+        flagsLinkLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jPanel8.add(flagsLinkLabel);
+
+        linksPanel.add(jPanel8);
+
         mainPanel.add(linksPanel, java.awt.BorderLayout.SOUTH);
 
         getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
@@ -186,6 +201,7 @@ public class AboutDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomPanel;
+    private javax.swing.JLabel flagsLinkLabel;
     private javax.swing.JLabel heartLinkLabel;
     private javax.swing.JLabel homeLinkLabel;
     private javax.swing.JPanel infoPanel;
@@ -195,6 +211,7 @@ public class AboutDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -202,6 +219,7 @@ public class AboutDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JLabel keyLinkLabel;
     private javax.swing.JPanel linksPanel;
     private javax.swing.JPanel logoPanel;
@@ -331,6 +349,22 @@ public class AboutDialog extends javax.swing.JDialog {
             public void mouseClicked(MouseEvent e) {
                 try {
                     Desktop.getDesktop().browse(new URI(imageLink));
+                } catch (Exception urlException) {
+                    LOGGER.log(Level.SEVERE, null, urlException);
+                }
+            }
+        });
+    }
+    
+    private void setFlagsSourceLink() {
+        final String homeLink = "https://github.com/hampusborgos/country-flags";
+        flagsLinkLabel.setText("<html><a href=\"\">" + homeLink + "</a></html>");
+        flagsLinkLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        flagsLinkLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().browse(new URI(homeLink));
                 } catch (Exception urlException) {
                     LOGGER.log(Level.SEVERE, null, urlException);
                 }

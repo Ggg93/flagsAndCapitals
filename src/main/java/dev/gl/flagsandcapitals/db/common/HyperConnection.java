@@ -4,15 +4,16 @@ import dev.gl.flagsandcapitals.enums.Achievement;
 import dev.gl.flagsandcapitals.enums.GameMode;
 import dev.gl.flagsandcapitals.enums.Region;
 import dev.gl.flagsandcapitals.utils.logging.Logging;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,7 +45,7 @@ public class HyperConnection {
             setInitialParameters();
             LOGGER.log(Level.CONFIG, "con to db established");
             createTablesAtFirstLaunch();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             throw new RuntimeException("Connection to DB has failed");
         }
@@ -68,9 +69,10 @@ public class HyperConnection {
         stmt.close();
     }
 
-    private void createTablesAtFirstLaunch() throws SQLException {
+    private void createTablesAtFirstLaunch() throws Exception {
         createGameModesTable();
         createRegionTable();
+        createGeographyTable();
         createGamesTable();
         createAchievementsTable();
         createSettingsTable();
@@ -179,7 +181,7 @@ public class HyperConnection {
 
             LOGGER.config("Insert first " + affectedRows.length + " rows in the \"achievements\" table");
         }
-        
+
 //        LocalDate ld = LocalDate.now();
 //        PreparedStatement stmt2 = con.prepareStatement("UPDATE ACHIEVEMENTS SET achieved_date = ? WHERE code = ?");
 //        stmt2.setDate(1, java.sql.Date.valueOf(ld));
@@ -243,11 +245,56 @@ public class HyperConnection {
         return !rs.isBeforeFirst();
     }
 
-    private String convertToVarchar(String s) {
-        return new StringBuilder("'").append(s).append("'").toString();
-    }
-
     public Connection getCon() {
         return con;
+    }
+
+    private void createGeographyTable() throws Exception {
+        Statement stmt = con.createStatement();
+        String query = """
+                           CREATE TABLE IF NOT EXISTS geography (
+                            id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                            iso_code VARCHAR(10),
+                            country_en VARCHAR(100),
+                            country_ru VARCHAR(100),
+                            capital_en VARCHAR(100),
+                            capital_ru VARCHAR(100),
+                            region_id INT NOT NULL,
+                       
+                            FOREIGN KEY (region_id) REFERENCES region(id) ON DELETE RESTRICT
+                           );
+                           """;
+        stmt.executeUpdate(query);
+
+        if (isTableEmpty("geography")) {
+            // preparing to read a file. Skip first line with headers
+            File csv = new File(this.getClass().getClassLoader()
+                    .getResource("csv/geography.csv").toURI());
+            BufferedReader reader = new BufferedReader(new FileReader(csv));
+            reader.readLine();
+            String line;
+            
+            // preparing sql query
+            String sql = """
+                            INSERT INTO geography (iso_code, country_en, country_ru, capital_en, capital_ru, region_id)
+                            VALUES (?, ?, ?, ?, ?, ?)
+                         """;
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            
+            while ((line = reader.readLine()) != null) {
+                String[] columns = line.split(";", -1);
+
+                pstmt.setString(1, columns[0]);
+                pstmt.setString(2, columns[1]);
+                pstmt.setString(3, columns[2]);
+                pstmt.setString(4, columns[3]);
+                pstmt.setString(5, columns[4]);
+                pstmt.setInt(6, Integer.parseInt(columns[5]));
+                pstmt.addBatch();
+            }
+
+            int[] affectedRows = pstmt.executeBatch();
+            LOGGER.log(Level.CONFIG, "First " + affectedRows.length + "rows inserted in \"geography\" table");
+        }
     }
 }

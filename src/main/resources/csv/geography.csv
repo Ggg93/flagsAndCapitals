@@ -1,0 +1,196 @@
+﻿iso_code;country_en;country_ru;capital_en;capital_ru;region_id
+AF;Afghanistan;Афганистан;Kabul;Кабул;1
+AL;Albania;Албания;Tirana;Тирана;5
+DZ;Algeria;Алжир;Algiers;Алжир;2
+AD;Andorra;Андорра;Andorra la Vella;Андорра-ла-Велья;5
+AO;Angola;Ангола;Luanda;Луанда;2
+AG;Antigua and Barbuda;Антигуа и Барбуда;Saint Johns;Сент-Джонс;3
+AR;Argentina;Аргентина;Buenos Aires;Буэнос-Айрес;4
+AM;Armenia;Армения;Yerevan;Ереван;1
+AU;Australia;Австралия;Canberra;Канберра;6
+AT;Austria;Австрия;Vienna;Вена;5
+AZ;Azerbaijan;Азербайджан;Baku;Баку;1
+BS;Bahamas;Багамские Острова;Nassau;Нассау;3
+BH;Bahrain;Бахрейн;Manama;Манама;1
+BD;Bangladesh;Бангладеш;Dhaka;Дакка;1
+BB;Barbados;Барбадос;Bridgetown;Бриджтаун;3
+BY;Belarus;Беларусь;Minsk;Минск;5
+BE;Belgium;Бельгия;Brussels;Брюссель;5
+BZ;Belize;Белиз;Belmopan;Бельмопан;3
+BJ;Benin;Бенин;Porto-Novo;Порто-Ново;2
+BT;Bhutan;Бутан;Thimphu;Тхимпху;1
+BO;Bolivia;Боливия;Sucre;Сукре;4
+BA;Bosnia and Herzegovina;Босния и Герцеговина;Sarajevo;Сараево;5
+BW;Botswana;Ботсвана;Gaborone;Габороне;2
+BR;Brazil;Бразилия;Brasilia;Бразилиа;4
+BN;Brunei;Бруней;Bandar Seri Begawan;Бандар-Сери-Бегаван;1
+BG;Bulgaria;Болгария;Sofia;София;5
+BF;Burkina Faso;Буркина-Фасо;Ouagadougou;Уагадугу;2
+BI;Burundi;Бурунди;Gitega;Гитега;2
+KH;Cambodia;Камбоджа;Phnom Penh;Пномпень;1
+CM;Cameroon;Камерун;Yaounde;Яунде;2
+CA;Canada;Канада;Ottawa;Оттава;3
+CV;Cape Verde;Кабо-Верде;Praia;Прая;2
+CF;Central African Republic;ЦАР;Bangui;Банги;2
+TD;Chad;Чад;NDjamena;Нджамена;2
+CL;Chile;Чили;Santiago;Сантьяго;4
+CN;China;Китай;Beijing;Пекин;1
+CO;Colombia;Колумбия;Bogota;Богота;4
+KM;Comoros;Коморы;Moroni;Морони;2
+CD;Democratic Republic of the Congo;ДР Конго;Kinshasa;Киншаса;2
+CG;Republic of the Congo;Республика Конго;Brazzaville;Браззавиль;2
+CR;Costa Rica;Коста-Рика;San Jose;Сан-Хосе;3
+HR;Croatia;Хорватия;Zagreb;Загреб;5
+CU;Cuba;Куба;Havana;Гавана;3
+CY;Cyprus;Кипр;Nicosia;Никосия;1
+CZ;Czech Republic;Чехия;Prague;Прага;5
+DK;Denmark;Дания;Copenhagen;Копенгаген;5
+DJ;Djibouti;Джибути;Djibouti;Джибути;2
+DM;Dominica;Доминика;Roseau;Розо;3
+DO;Dominican Republic;Доминиканская Республика;Santo Domingo;Санто-Доминго;3
+EC;Ecuador;Эквадор;Quito;Кито;4
+EG;Egypt;Египет;Cairo;Каир;2
+SV;El Salvador;Сальвадор;San Salvador;Сан-Сальвадор;3
+GQ;Equatorial Guinea;Экваториальная Гвинея;Malabo;Малабо;2
+ER;Eritrea;Эритрея;Asmara;Асмэра;2
+EE;Estonia;Эстония;Tallinn;Таллин;5
+SZ;Eswatini;Эсватини;Mbabane;Мбабане;2
+ET;Ethiopia;Эфиопия;Addis Ababa;Аддис-Абеба;2
+FJ;Fiji;Фиджи;Suva;Сува;6
+FI;Finland;Финляндия;Helsinki;Хельсинки;5
+FR;France;Франция;Paris;Париж;5
+GA;Gabon;Габон;Libreville;Либревиль;2
+GM;Gambia;Гамбия;Banjul;Банжул;2
+GE;Georgia;Грузия;Tbilisi;Тбилиси;1
+DE;Germany;Германия;Berlin;Берлин;5
+GH;Ghana;Гана;Accra;Аккра;2
+GR;Greece;Греция;Athens;Афины;5
+GD;Grenada;Гренада;Saint Georges;Сент-Джорджес;3
+GT;Guatemala;Гватемала;Guatemala City;Гватемала;3
+GN;Guinea;Гвинея;Conakry;Конакри;2
+GW;Guinea-Bissau;Гвинея-Бисау;Bissau;Бисау;2
+GY;Guyana;Гайана;Georgetown;Джорджтаун;4
+HT;Haiti;Гаити;Port-au-Prince;Порт-о-Пренс;3
+HN;Honduras;Гондурас;Tegucigalpa;Тегусигальпа;3
+HU;Hungary;Венгрия;Budapest;Будапешт;5
+IS;Iceland;Исландия;Reykjavik;Рейкьявик;5
+IN;India;Индия;New Delhi;Нью-Дели;1
+ID;Indonesia;Индонезия;Jakarta;Джакарта;1
+IR;Iran;Иран;Tehran;Тегеран;1
+IQ;Iraq;Ирак;Baghdad;Багдад;1
+IE;Ireland;Ирландия;Dublin;Дублин;5
+IL;Israel;Израиль;Jerusalem;Иерусалим;1
+IT;Italy;Италия;Rome;Рим;5
+JM;Jamaica;Ямайка;Kingston;Кингстон;3
+JP;Japan;Япония;Tokyo;Токио;1
+JO;Jordan;Иордания;Amman;Амман;1
+KZ;Kazakhstan;Казахстан;Astana;Астана;1
+KE;Kenya;Кения;Nairobi;Найроби;2
+KI;Kiribati;Кирибати;Tarawa;Тарава;6
+KP;North Korea;КНДР;Pyongyang;Пхеньян;1
+KR;South Korea;Республика Корея;Seoul;Сеул;1
+KW;Kuwait;Кувейт;Kuwait City;Эль-Кувейт;1
+KG;Kyrgyzstan;Кыргызстан;Bishkek;Бишкек;1
+LA;Laos;Лаос;Vientiane;Вьентьян;1
+LV;Latvia;Латвия;Riga;Рига;5
+LB;Lebanon;Ливан;Beirut;Бейрут;1
+LS;Lesotho;Лесото;Maseru;Масеру;2
+LR;Liberia;Либерия;Monrovia;Монровия;2
+LY;Libya;Ливия;Tripoli;Триполи;2
+LI;Liechtenstein;Лихтенштейн;Vaduz;Вадуц;5
+LT;Lithuania;Литва;Vilnius;Вильнюс;5
+LU;Luxembourg;Люксембург;Luxembourg;Люксембург;5
+MG;Madagascar;Мадагаскар;Antananarivo;Антананариву;2
+MW;Malawi;Малави;Lilongwe;Лилонгве;2
+MY;Malaysia;Малайзия;Kuala Lumpur;Куала-Лумпур;1
+MV;Maldives;Мальдивы;Male;Мале;1
+ML;Mali;Мали;Bamako;Бамако;2
+MT;Malta;Мальта;Valletta;Валлетта;5
+MH;Marshall Islands;Маршалловы Острова;Majuro;Маджуро;6
+MR;Mauritania;Мавритания;Nouakchott;Нуакшот;2
+MU;Mauritius;Маврикий;Port Louis;Порт-Луи;2
+MX;Mexico;Мексика;Mexico City;Мехико;3
+FM;Micronesia;Микронезия;Palikir;Паликир;6
+MD;Moldova;Молдова;Chisinau;Кишинев;5
+MC;Monaco;Монако;Monaco;Монако;5
+MN;Mongolia;Монголия;Ulaanbaatar;Улан-Батор;1
+ME;Montenegro;Черногория;Podgorica;Подгорица;5
+MA;Morocco;Марокко;Rabat;Рабат;2
+MZ;Mozambique;Мозамбик;Maputo;Мапуту;2
+MM;Myanmar;Мьянма;Naypyidaw;Нейпьидо;1
+NA;Namibia;Намибия;Windhoek;Виндхук;2
+NR;Nauru;Науру;Yaren;Ярен;6
+NP;Nepal;Непал;Kathmandu;Катманду;1
+NL;Netherlands;Нидерланды;Amsterdam;Амстердам;5
+NZ;New Zealand;Новая Зеландия;Wellington;Веллингтон;6
+NI;Nicaragua;Никарагуа;Managua;Манагуа;3
+NE;Niger;Нигер;Niamey;Ниамей;2
+NG;Nigeria;Нигерия;Abuja;Абуджа;2
+MK;North Macedonia;Северная Македония;Skopje;Скопье;5
+NO;Norway;Норвегия;Oslo;Осло;5
+OM;Oman;Оман;Muscat;Маскат;1
+PK;Pakistan;Пакистан;Islamabad;Исламабад;1
+PW;Palau;Палау;Ngerulmud;Нгерулмуд;6
+PA;Panama;Панама;Panama City;Панама;3
+PG;Papua New Guinea;Папуа — Новая Гвинея;Port Moresby;Порт-Морсби;6
+PY;Paraguay;Парагвай;Asuncion;Асунсьон;4
+PE;Peru;Перу;Lima;Лима;4
+PH;Philippines;Филиппины;Manila;Манила;1
+PL;Poland;Польша;Warsaw;Варшава;5
+PT;Portugal;Португалия;Lisbon;Лиссабон;5
+QA;Qatar;Катар;Doha;Доха;1
+RO;Romania;Румыния;Bucharest;Бухарест;5
+RU;Russia;Россия;Moscow;Москва;1
+RW;Rwanda;Руанда;Kigali;Кигали;2
+KN;Saint Kitts and Nevis;Сент-Китс и Невис;Basseterre;Бастер;3
+LC;Saint Lucia;Сент-Люсия;Castries;Кастри;3
+VC;Saint Vincent and the Grenadines;Сент-Винсент и Гренадины;Kingstown;Кингстаун;3
+WS;Samoa;Самоа;Apia;Апиа;6
+SM;San Marino;Сан-Марино;San Marino;Сан-Марино;5
+ST;Sao Tome and Principe;Сан-Томе и Принсипи;Sao Tome;Сан-Томе;2
+SA;Saudi Arabia;Саудовская Аравия;Riyadh;Эр-Рияд;1
+SN;Senegal;Сенегал;Dakar;Дакар;2
+RS;Serbia;Сербия;Belgrade;Белград;5
+SC;Seychelles;Сейшельские Острова;Victoria;Виктория;2
+SL;Sierra Leone;Сьерра-Леоне;Freetown;Фритаун;2
+SG;Singapore;Сингапур;Singapore;Сингапур;1
+SK;Slovakia;Словакия;Bratislava;Братислава;5
+SI;Slovenia;Словения;Ljubljana;Любляна;5
+SB;Solomon Islands;Соломоновы Острова;Honiara;Хониара;6
+SO;Somalia;Сомали;Mogadishu;Могадишо;2
+ZA;South Africa;ЮАР;Pretoria;Претория;2
+SS;South Sudan;Южный Судан;Juba;Джуба;2
+ES;Spain;Испания;Madrid;Мадрид;5
+LK;Sri Lanka;Шри-Ланка;Sri Jayawardenepura Kotte;Шри-Джаяварденепура-Котте;1
+SD;Sudan;Судан;Khartoum;Хартум;2
+SR;Suriname;Суринам;Paramaribo;Парамарибо;4
+SE;Sweden;Швеция;Stockholm;Стокгольм;5
+CH;Switzerland;Швейцария;Bern;Берн;5
+SY;Syria;Сирия;Damascus;Дамаск;1
+TJ;Tajikistan;Таджикистан;Dushanbe;Душанбе;1
+TZ;Tanzania;Танзания;Dodoma;Додома;2
+TH;Thailand;Таиланд;Bangkok;Бангкок;1
+TL;Timor-Leste;Восточный Тимор;Dili;Дили;1
+TG;Togo;Того;Lome;Ломе;2
+TO;Tonga;Тонга;Nukualofa;Нукуалофа;6
+TT;Trinidad and Tobago;Тринидад и Тобаго;Port of Spain;Порт-оф-Спейн;3
+TN;Tunisia;Тунис;Tunis;Тунис;2
+TR;Turkiye;Турция;Ankara;Анкара;1
+TM;Turkmenistan;Туркменистан;Ashgabat;Ашхабад;1
+TV;Tuvalu;Тувалу;Funafuti;Фунафути;6
+UG;Uganda;Уганда;Kampala;Кампала;2
+UA;Ukraine;Украина;Kyiv;Киев;5
+AE;United Arab Emirates;ОАЭ;Abu Dhabi;Абу-Даби;1
+GB;United Kingdom;Великобритания;London;Лондон;5
+US;United States;США;Washington DC;Вашингтон;3
+UY;Uruguay;Уругвай;Montevideo;Монтевидео;4
+UZ;Uzbekistan;Узбекистан;Tashkent;Ташкент;1
+VU;Vanuatu;Вануату;Port Vila;Порт-Вила;6
+VA;Vatican City;Ватикан;Vatican City;Ватикан;5
+VE;Venezuela;Венесуэла;Caracas;Каракас;4
+VN;Vietnam;Вьетнам;Hanoi;Ханой;1
+YE;Yemen;Йемен;Sanaa;Сана;1
+ZM;Zambia;Замбия;Lusaka;Лусака;2
+ZW;Zimbabwe;Зимбабве;Harare;Хараре;2
+PS;Palestine;Палестина;Ramallah;Рамалла;1
+XK;Kosovo;Косово;Pristina;Приштина;5
