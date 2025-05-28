@@ -42,6 +42,7 @@ public class AboutDialog extends javax.swing.JDialog {
         setMapSourceLink();
         setHeartSourceLink();
         setKeySourceLink();
+        setTrophySourceLink();
         LOGGER.fine("AboutDialog opened");
     }
 
@@ -71,13 +72,16 @@ public class AboutDialog extends javax.swing.JDialog {
         jPanel6 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         keyLinkLabel = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        trophyLinkLabel = new javax.swing.JLabel();
         bottomPanel = new javax.swing.JPanel();
         okButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(Configuration.getResourceBundle().getString("title")); // NOI18N
-        setMinimumSize(new java.awt.Dimension(300, 280));
-        setPreferredSize(new java.awt.Dimension(300, 280));
+        setMinimumSize(new java.awt.Dimension(300, 300));
+        setPreferredSize(new java.awt.Dimension(300, 300));
         setResizable(false);
 
         mainPanel.setLayout(new java.awt.BorderLayout());
@@ -110,7 +114,7 @@ public class AboutDialog extends javax.swing.JDialog {
 
         mainPanel.add(upperSubpanel, java.awt.BorderLayout.CENTER);
 
-        linksPanel.setLayout(new java.awt.GridLayout(4, 1));
+        linksPanel.setLayout(new java.awt.GridLayout(5, 1));
 
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -156,6 +160,17 @@ public class AboutDialog extends javax.swing.JDialog {
 
         linksPanel.add(jPanel6);
 
+        jPanel7.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel5.setText(Configuration.getResourceBundle().getString("aboutTrophyLinkLabel")); // NOI18N
+        jPanel7.add(jLabel5);
+
+        trophyLinkLabel.setText("jLabel5");
+        trophyLinkLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jPanel7.add(trophyLinkLabel);
+
+        linksPanel.add(jPanel7);
+
         mainPanel.add(linksPanel, java.awt.BorderLayout.SOUTH);
 
         getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
@@ -175,6 +190,7 @@ public class AboutDialog extends javax.swing.JDialog {
     private javax.swing.JPanel infoPanel;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -184,6 +200,7 @@ public class AboutDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JLabel keyLinkLabel;
     private javax.swing.JPanel linksPanel;
     private javax.swing.JPanel logoPanel;
@@ -191,6 +208,7 @@ public class AboutDialog extends javax.swing.JDialog {
     private javax.swing.JLabel mapLinkLabel;
     private javax.swing.JButton okButton;
     private javax.swing.JLabel programNameLabel;
+    private javax.swing.JLabel trophyLinkLabel;
     private javax.swing.JPanel upperSubpanel;
     private javax.swing.JLabel versionLabel;
     // End of variables declaration//GEN-END:variables
@@ -285,6 +303,29 @@ public class AboutDialog extends javax.swing.JDialog {
         keyLinkLabel.setText(icons8Link);
         keyLinkLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         keyLinkLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().browse(new URI(imageLink));
+                } catch (Exception urlException) {
+                    LOGGER.log(Level.SEVERE, null, urlException);
+                }
+            }
+        });
+    }
+    
+    private void setTrophySourceLink() {
+        final String imageLink = "https://icons8.com/icon/pBDUTxjAkZKW/trophy";
+        final String icons8Link = """
+                                <html>
+                                <a href="https://icons8.com/icon/pBDUTxjAkZKW/trophy">Trophy</a>
+                                icon by 
+                                <a href="https://icons8.com">Icons8</a>
+                                </html>
+                                """;
+        trophyLinkLabel.setText(icons8Link);
+        trophyLinkLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        trophyLinkLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
