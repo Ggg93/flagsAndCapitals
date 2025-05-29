@@ -66,8 +66,6 @@ public class GameBoardPanel extends javax.swing.JPanel {
         controlPanel = new javax.swing.JPanel();
         lettersPanel = new javax.swing.JPanel();
         buttonsPanel = new javax.swing.JPanel();
-        leftButtonPanel = new javax.swing.JPanel();
-        endGameButton = new javax.swing.JButton();
         centerButtonsPanel = new javax.swing.JPanel();
         answerButton = new javax.swing.JButton();
 
@@ -113,13 +111,6 @@ public class GameBoardPanel extends javax.swing.JPanel {
 
         buttonsPanel.setLayout(new java.awt.BorderLayout());
 
-        leftButtonPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        endGameButton.setText(Configuration.getResourceBundle().getString("endGameButton")); // NOI18N
-        leftButtonPanel.add(endGameButton);
-
-        buttonsPanel.add(leftButtonPanel, java.awt.BorderLayout.WEST);
-
         answerButton.setText(Configuration.getResourceBundle().getString("answerButton")); // NOI18N
         centerButtonsPanel.add(answerButton);
 
@@ -136,10 +127,8 @@ public class GameBoardPanel extends javax.swing.JPanel {
     private javax.swing.JPanel buttonsPanel;
     private javax.swing.JPanel centerButtonsPanel;
     private javax.swing.JPanel controlPanel;
-    private javax.swing.JButton endGameButton;
     private javax.swing.JPanel flagOrCapitalPanel;
     private javax.swing.JPanel infoPanel;
-    private javax.swing.JPanel leftButtonPanel;
     private javax.swing.JPanel leftInfoPanel;
     private javax.swing.JPanel lettersPanel;
     private javax.swing.JPanel mainPanel;
