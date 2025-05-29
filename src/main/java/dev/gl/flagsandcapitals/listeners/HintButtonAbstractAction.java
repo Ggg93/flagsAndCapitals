@@ -1,0 +1,42 @@
+package dev.gl.flagsandcapitals.listeners;
+
+import dev.gl.flagsandcapitals.db.entities.DbGeography;
+import dev.gl.flagsandcapitals.gui.GameBoardPanel;
+import dev.gl.flagsandcapitals.models.GameModel;
+import dev.gl.flagsandcapitals.utils.logging.Logging;
+import java.awt.event.ActionEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.AbstractAction;
+
+/**
+ *
+ * @author gl
+ */
+public class HintButtonAbstractAction extends AbstractAction {
+    
+    private static final Logger LOGGER = Logging.getLocalLogger(HintButtonAbstractAction.class);
+    private final GameBoardPanel gameBoardPanel;
+    private GameModel gameModel;
+
+    public HintButtonAbstractAction(GameBoardPanel gameBoardPanel) {
+        this.gameBoardPanel = gameBoardPanel;
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        DbGeography answer = gameModel.useHint();
+        if (answer == null) {
+            LOGGER.log(Level.FINE, "Player has no hints at the moment");
+            return;
+        }
+        
+        gameBoardPanel.setAnswer(answer);
+        gameBoardPanel.setHintsNumber(gameModel.getHints());
+    }
+
+    public void setGameModel(GameModel gameModel) {
+        this.gameModel = gameModel;
+    }
+    
+}

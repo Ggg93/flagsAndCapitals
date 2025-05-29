@@ -99,5 +99,15 @@ public class GameModel {
     public DbGeography getNextQuestion() {
         return questions.get(questionId - 1);
     }
+
+    public DbGeography useHint() {
+        // check that player has at least one hint
+        if (hints == 0) {
+            return null;
+        }
+        
+        hints--;
+        return getNextQuestion();
+    }
     
 }

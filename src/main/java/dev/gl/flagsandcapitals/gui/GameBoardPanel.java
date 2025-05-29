@@ -1,9 +1,10 @@
 package dev.gl.flagsandcapitals.gui;
 
+import dev.gl.flagsandcapitals.db.entities.DbGeography;
 import static dev.gl.flagsandcapitals.enums.GameMode.CAPITALS;
 import static dev.gl.flagsandcapitals.enums.GameMode.FLAGS;
-import dev.gl.flagsandcapitals.enums.Language;
 import static dev.gl.flagsandcapitals.enums.Language.EN;
+import dev.gl.flagsandcapitals.listeners.HintButtonAbstractAction;
 import dev.gl.flagsandcapitals.models.GameModel;
 import dev.gl.flagsandcapitals.utils.ButtonFilter;
 import dev.gl.flagsandcapitals.utils.ButtonFocusListener;
@@ -12,15 +13,22 @@ import dev.gl.flagsandcapitals.utils.Configuration;
 import dev.gl.flagsandcapitals.utils.logging.Logging;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.text.AbstractDocument;
 import org.apache.batik.swing.JSVGCanvas;
@@ -39,6 +47,10 @@ public class GameBoardPanel extends javax.swing.JPanel {
     private ImageIcon heartIcon = new ImageIcon(this.getClass().getClassLoader().getResource("images/icons8-heart-20.png"));
     private ImageIcon keyIcon = new ImageIcon(this.getClass().getClassLoader().getResource("images/icons8-key-20.png"));
     private GameModel gameModel;
+    private JLabel hintNumberLabel;
+    private JButton hintButton;
+    private List<JTextField> textFields;
+    private HintButtonAbstractAction hintButtonListener;
 
     public GameBoardPanel() {
         initComponents();
@@ -47,6 +59,11 @@ public class GameBoardPanel extends javax.swing.JPanel {
     public void setGameModel(GameModel gameModel) {
         this.gameModel = gameModel;
         initData();
+        
+        hintButtonListener = new HintButtonAbstractAction(this);
+        hintButtonListener.setGameModel(gameModel);
+        bindActionsToButtons();
+        createKeyBindings();
     }
 
     @SuppressWarnings("unchecked")
@@ -153,12 +170,12 @@ public class GameBoardPanel extends javax.swing.JPanel {
         rightInfoPanel.add(heartNumber);
         JLabel keyLabel = new JLabel(keyIcon);
         rightInfoPanel.add(keyLabel);
-        JLabel keyNumber = new JLabel(gameModel.getHints().toString());
-        rightInfoPanel.add(keyNumber);
-        String helpText = Configuration.getResourceBundle().getString("hintButton");
-        JButton helpButton = new JButton();
-        helpButton.setText(helpText);
-        rightInfoPanel.add(helpButton);
+        hintNumberLabel = new JLabel(gameModel.getHints().toString());
+        rightInfoPanel.add(hintNumberLabel);
+        String hintButtonText = Configuration.getResourceBundle().getString("hintButton");
+        hintButton = new JButton();
+        hintButton.setText(hintButtonText);
+        rightInfoPanel.add(hintButton);
 
         // questionLabel
         String questionLabelText = null;
@@ -218,7 +235,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
                 break;
         }
         
-        List<JTextField> textFields = new ArrayList<>();
+        textFields = new ArrayList<>();
         for (int i = 0; i < answer.length(); i++) {
             JTextField letterField = new JTextField();
             textFields.add(letterField);
@@ -248,5 +265,34 @@ public class GameBoardPanel extends javax.swing.JPanel {
         lettersPanel.repaint();
         
         
+    }
+
+    public void setHintsNumber(Integer hints) {
+        hintNumberLabel.setText(hints.toString());
+        hintButton.setEnabled(hints > 0);
+    }
+
+    public void setAnswer(DbGeography answer) {
+        String country = answer.getCountryLocalized();
+        for (int i = 0; i < country.length(); i++) {
+            char ch = country.charAt(i);
+            textFields.get(i).setText(Character.toString(ch));
+        }
+    }
+    
+    public JButton getHintButton() {
+        return hintButton;
+    }
+    
+    private void bindActionsToButtons() {
+        hintButton.addActionListener(hintButtonListener);
+    }
+    
+    private void createKeyBindings() {
+        InputMap inputMap = this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        ActionMap actionMap = this.getActionMap();
+        
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK), "hint");
+        actionMap.put("hint", hintButtonListener);
     }
 }

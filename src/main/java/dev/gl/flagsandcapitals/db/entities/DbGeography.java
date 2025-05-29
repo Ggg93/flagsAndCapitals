@@ -1,8 +1,8 @@
 package dev.gl.flagsandcapitals.db.entities;
 
 import dev.gl.flagsandcapitals.db.common.HyperConnection;
-import dev.gl.flagsandcapitals.enums.GameMode;
 import dev.gl.flagsandcapitals.enums.Region;
+import dev.gl.flagsandcapitals.utils.Configuration;
 import dev.gl.flagsandcapitals.utils.logging.Logging;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -146,6 +146,19 @@ public class DbGeography {
 
     public Region getRegion() {
         return region;
+    }
+
+    public String getCountryLocalized() {
+        String country = null;
+        switch (Configuration.getLang()) {
+            case EN:
+                country = countryEn;
+                break;
+            case RU:
+                country = countryRu;
+                break;
+        }
+        return country;
     }
 
 }
