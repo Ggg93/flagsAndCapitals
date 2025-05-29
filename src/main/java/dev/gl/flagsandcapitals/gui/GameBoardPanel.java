@@ -6,9 +6,12 @@ import static dev.gl.flagsandcapitals.enums.Language.EN;
 import dev.gl.flagsandcapitals.models.GameModel;
 import dev.gl.flagsandcapitals.utils.Configuration;
 import dev.gl.flagsandcapitals.utils.logging.Logging;
+import java.net.URL;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import org.apache.batik.swing.JSVGCanvas;
 
 /**
  *
@@ -163,10 +166,18 @@ public class GameBoardPanel extends javax.swing.JPanel {
         // flagOrCapitalPanel
         switch (gameModel.getGameMode()) {
             case FLAGS:
-                String link = "images/flags/svg/" + gameModel.getNextQuestion().getIsoCode().toLowerCase() + ".svg";
-                ImageIcon flagIcon = new ImageIcon(this.getClass().getClassLoader().getResource(link));
-                JLabel flag = new JLabel(flagIcon);
-                flagOrCapitalPanel.add(flag);
+                try {
+                    String link = "images/flags/svg/" + gameModel.getNextQuestion().getIsoCode().toLowerCase() + ".svg";
+                    URL url = this.getClass().getClassLoader().getResource(link);
+                    String uri = url.toURI().toString();
+                    
+                    JSVGCanvas svg = new JSVGCanvas();
+                    svg.setURI(uri);
+                    flagOrCapitalPanel.add(svg);
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+                }
+
                 break;
             case CAPITALS:
                 String capital = null;

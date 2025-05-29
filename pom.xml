@@ -19,12 +19,46 @@
                 <filtering>true</filtering>
             </resource>
         </resources> 
+        <plugins>
+            <!-- maven-assembly-plugin is needed to build jar with dependencies-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>dev.gl.flagsandcapitals.FlagsAndCapitals</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
     <dependencies>
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>2.7.4</version>
+        </dependency>
+        <!-- batik-swing is needed to show svg images-->
+        <!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-swing -->
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-swing</artifactId>
+            <version>1.19</version>
         </dependency>
     </dependencies>
 </project>
