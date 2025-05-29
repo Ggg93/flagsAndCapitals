@@ -270,6 +270,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
     public void setHintsNumber(Integer hints) {
         hintNumberLabel.setText(hints.toString());
         hintButton.setEnabled(hints > 0);
+        PopupWindow.showPopupWindow(hintButton, "-1 hint!", 1000, 1500);
     }
 
     public void setAnswer(DbGeography answer) {
