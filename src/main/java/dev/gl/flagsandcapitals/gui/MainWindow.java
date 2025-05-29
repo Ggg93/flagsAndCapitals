@@ -1,6 +1,7 @@
 package dev.gl.flagsandcapitals.gui;
 
 import dev.gl.flagsandcapitals.enums.MainWindowMode;
+import dev.gl.flagsandcapitals.models.GameModel;
 import dev.gl.flagsandcapitals.utils.Configuration;
 import dev.gl.flagsandcapitals.utils.MainWindowListenersKeeper;
 import java.awt.event.KeyEvent;
@@ -16,14 +17,15 @@ import javax.swing.KeyStroke;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-    private MainWindowMode mainWindowMode = MainWindowMode.IDLE;
+    private MainWindowMode mainWindowMode;
     private MainWindowListenersKeeper listenersKeeper;
-    private MainMenuPanel mainMenuPanel;
+    private MainMenuPanel mainMenuPanel = new MainMenuPanel();
+    private GameBoardPanel gameBoardPanel = new GameBoardPanel();
+    private GameModel gameModel;
 
     public MainWindow() {
         initComponents();
-        mainMenuPanel = new MainMenuPanel();
-        mainPanel.add(mainMenuPanel);
+        setMainWindowMode(MainWindowMode.IDLE);
 
         listenersKeeper = new MainWindowListenersKeeper(this);
         bindActionsToButtons();
@@ -97,23 +99,28 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     public void setMainWindowMode(MainWindowMode mode) {
-        if (mainWindowMode == mode) {
-            return;
-        }
+        mainWindowMode = mode;
+        mainPanel.removeAll();
 
         if (mode == MainWindowMode.PLAYING) {
+            mainPanel.add(gameBoardPanel);
             mainMenuButton.setVisible(true);
             mainMenuButton.setEnabled(true);
         }
 
         if (mode == MainWindowMode.IDLE) {
+            mainPanel.add(mainMenuPanel);
             mainMenuButton.setVisible(false);
             mainMenuButton.setEnabled(false);
         }
+        
+        mainPanel.revalidate();
+        mainPanel.repaint();
     }
 
     private void bindActionsToButtons() {
         exitButton.addActionListener(listenersKeeper.getClosingMainWindowListener());
+        mainMenuButton.addActionListener(listenersKeeper.getBackToMainMenuListener());
         mainMenuPanel.getNewGameButton().addActionListener(listenersKeeper.getChoosingRegionDialogListener());
         mainMenuPanel.getSettingsButton().addActionListener(listenersKeeper.getSettingsDialogListener());
         mainMenuPanel.getAboutButton().addActionListener(listenersKeeper.getAboutDialogListener());
@@ -127,6 +134,7 @@ public class MainWindow extends javax.swing.JFrame {
         
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "newGame");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "backToMainMenu");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0), "about");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "settings");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "stats");
@@ -134,9 +142,23 @@ public class MainWindow extends javax.swing.JFrame {
         
         actionMap.put("close", listenersKeeper.getClosingMainWindowListener());
         actionMap.put("newGame", listenersKeeper.getChoosingRegionDialogListener());
+        actionMap.put("backToMainMenu", listenersKeeper.getBackToMainMenuListener());
         actionMap.put("settings", listenersKeeper.getSettingsDialogListener());
         actionMap.put("about", listenersKeeper.getAboutDialogListener());
         actionMap.put("stats", listenersKeeper.getStatisticsDialogListener());
         actionMap.put("achievements", listenersKeeper.getAchievementsDialogListener());
     }
+
+    public GameModel getGameModel() {
+        return gameModel;
+    }
+
+    public void setGameModel(GameModel gameModel) {
+        this.gameModel = gameModel;
+    }
+
+    public MainWindowMode getMainWindowMode() {
+        return mainWindowMode;
+    }
+    
 }
