@@ -6,6 +6,7 @@ import dev.gl.flagsandcapitals.enums.Language;
 import static dev.gl.flagsandcapitals.enums.Language.EN;
 import dev.gl.flagsandcapitals.models.GameModel;
 import dev.gl.flagsandcapitals.utils.ButtonFilter;
+import dev.gl.flagsandcapitals.utils.ButtonFocusListener;
 import dev.gl.flagsandcapitals.utils.ButtonKeyListener;
 import dev.gl.flagsandcapitals.utils.Configuration;
 import dev.gl.flagsandcapitals.utils.logging.Logging;
@@ -226,6 +227,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
             letterField.setHorizontalAlignment(JTextField.CENTER);
             letterField.setFont(BUTTON_FONT);
             ((AbstractDocument) letterField.getDocument()).setDocumentFilter(BUTTON_FILTER);
+            letterField.addFocusListener(new ButtonFocusListener(letterField));
             lettersPanel.add(letterField);
             if (i == 0) {
                 final JTextField firstField = letterField;
