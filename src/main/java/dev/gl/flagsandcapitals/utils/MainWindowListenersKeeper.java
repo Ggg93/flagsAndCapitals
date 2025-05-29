@@ -3,6 +3,7 @@ package dev.gl.flagsandcapitals.utils;
 import dev.gl.flagsandcapitals.gui.MainWindow;
 import dev.gl.flagsandcapitals.listeners.AboutDialogAbstractAction;
 import dev.gl.flagsandcapitals.listeners.AchievementsDialogAbstractAction;
+import dev.gl.flagsandcapitals.listeners.ChoosingRegionDialogAbstractAction;
 import dev.gl.flagsandcapitals.listeners.ClosingMainWindowAbstractAction;
 import dev.gl.flagsandcapitals.listeners.SettingsDialogAbstractAction;
 import dev.gl.flagsandcapitals.listeners.StatisticsDialogAbstractAction;
@@ -12,6 +13,7 @@ import dev.gl.flagsandcapitals.listeners.StatisticsDialogAbstractAction;
  * @author gl
  */
 public class MainWindowListenersKeeper {
+    private ChoosingRegionDialogAbstractAction choosingRegionDialogListener;
     private ClosingMainWindowAbstractAction closingMainWindowListener;
     private SettingsDialogAbstractAction settingsDialogListener;
     private AboutDialogAbstractAction aboutDialogListener;
@@ -19,6 +21,7 @@ public class MainWindowListenersKeeper {
     private AchievementsDialogAbstractAction achievementsDialogListener;
 
     public MainWindowListenersKeeper(MainWindow mainWindow) {
+        choosingRegionDialogListener = new ChoosingRegionDialogAbstractAction(mainWindow);
         closingMainWindowListener = new ClosingMainWindowAbstractAction(mainWindow);
         settingsDialogListener = new SettingsDialogAbstractAction(mainWindow);
         aboutDialogListener = new AboutDialogAbstractAction(mainWindow);
@@ -26,6 +29,10 @@ public class MainWindowListenersKeeper {
         achievementsDialogListener = new AchievementsDialogAbstractAction(mainWindow);
     }
 
+    public ChoosingRegionDialogAbstractAction getChoosingRegionDialogListener() {
+        return choosingRegionDialogListener;
+    }
+    
     public ClosingMainWindowAbstractAction getClosingMainWindowListener() {
         return closingMainWindowListener;
     }
