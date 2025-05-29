@@ -155,7 +155,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
         rightInfoPanel.add(keyLabel);
         JLabel keyNumber = new JLabel(gameModel.getHints().toString());
         rightInfoPanel.add(keyNumber);
-        String helpText = Configuration.getLang() == Language.EN ? "Help" : "Подсказка";
+        String helpText = Configuration.getResourceBundle().getString("hintButton");
         JButton helpButton = new JButton();
         helpButton.setText(helpText);
         rightInfoPanel.add(helpButton);
