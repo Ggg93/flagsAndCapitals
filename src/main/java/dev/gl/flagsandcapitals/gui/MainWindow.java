@@ -103,6 +103,7 @@ public class MainWindow extends javax.swing.JFrame {
         mainPanel.removeAll();
 
         if (mode == MainWindowMode.PLAYING) {
+            gameBoardPanel.setGameModel(gameModel);
             mainPanel.add(gameBoardPanel);
             mainMenuButton.setVisible(true);
             mainMenuButton.setEnabled(true);

@@ -1,12 +1,17 @@
 package dev.gl.flagsandcapitals.models;
 
 import dev.gl.flagsandcapitals.db.common.HyperConnection;
+import dev.gl.flagsandcapitals.db.entities.DbGeography;
 import dev.gl.flagsandcapitals.enums.Difficulty;
 import dev.gl.flagsandcapitals.enums.GameMode;
 import dev.gl.flagsandcapitals.enums.MainWindowMode;
 import dev.gl.flagsandcapitals.enums.Region;
 import dev.gl.flagsandcapitals.gui.MainWindow;
 import dev.gl.flagsandcapitals.utils.Configuration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,6 +29,7 @@ public class GameModel {
     private Integer lives;
     private Integer initialAvailableHints;
     private Integer hintRate;
+    private List<DbGeography> questions;
     
     public GameModel(MainWindow mw, Region region) {
         this.mw = mw;
@@ -35,8 +41,7 @@ public class GameModel {
         lives = difficulty.getLives();
         initialAvailableHints = difficulty.getInitialAvailableHints();
         hintRate = difficulty.getHintRate();
-        
-        mw.setMainWindowMode(MainWindowMode.PLAYING);
+        questions = loadQuestionsFromDB();
     }
 
     /**
@@ -53,5 +58,44 @@ public class GameModel {
         
         // logic...
     }
+
+    public GameMode getGameMode() {
+        return gameMode;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public String getStepInfo() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(questionId);
+        sb.append(" / ");
+        sb.append(questions.size());
+        return sb.toString();
+    }
+
+    public Integer getLives() {
+        return lives;
+    }
+
+    public Integer getInitialAvailableHints() {
+        return initialAvailableHints;
+    }
+
+    private List<DbGeography> loadQuestionsFromDB() {
+        Map<Integer, DbGeography> regionsFromDB = (region == Region.ALL)
+                ? DbGeography.getAllRows(con) 
+                : DbGeography.getRowsByRegionFilter(con, region);
+        List<DbGeography> questionList = new ArrayList<>(regionsFromDB.values());
+        Collections.shuffle(questionList);
+        return questionList;
+    }
+    
+    
     
 }

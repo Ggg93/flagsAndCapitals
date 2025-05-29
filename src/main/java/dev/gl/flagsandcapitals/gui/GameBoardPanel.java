@@ -1,5 +1,6 @@
 package dev.gl.flagsandcapitals.gui;
 
+import dev.gl.flagsandcapitals.models.GameModel;
 import dev.gl.flagsandcapitals.utils.Configuration;
 import dev.gl.flagsandcapitals.utils.logging.Logging;
 import java.util.logging.Logger;
@@ -11,11 +12,17 @@ import java.util.logging.Logger;
 public class GameBoardPanel extends javax.swing.JPanel {
     
     private static final Logger LOGGER = Logging.getLocalLogger(GameBoardPanel.class);
+    private GameModel gameModel;
 
     public GameBoardPanel() {
         initComponents();
     }
 
+    public void setGameModel(GameModel gameModel) {
+        this.gameModel = gameModel;
+        initData();
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -23,9 +30,9 @@ public class GameBoardPanel extends javax.swing.JPanel {
         infoPanel = new javax.swing.JPanel();
         leftInfoPanel = new javax.swing.JPanel();
         regionLabel = new javax.swing.JLabel();
-        regionTextField = new javax.swing.JTextField();
+        regionValueLabel = new javax.swing.JLabel();
         stepLabel = new javax.swing.JLabel();
-        stepTextField = new javax.swing.JTextField();
+        stepValueLabel = new javax.swing.JLabel();
         rightInfoPanel = new javax.swing.JPanel();
         mainPanel = new javax.swing.JPanel();
         questionPanel = new javax.swing.JPanel();
@@ -48,14 +55,14 @@ public class GameBoardPanel extends javax.swing.JPanel {
         regionLabel.setText(Configuration.getResourceBundle().getString("regionLabel")); // NOI18N
         leftInfoPanel.add(regionLabel);
 
-        regionTextField.setText("jTextField1");
-        leftInfoPanel.add(regionTextField);
+        regionValueLabel.setText("jLabel1");
+        leftInfoPanel.add(regionValueLabel);
 
         stepLabel.setText(Configuration.getResourceBundle().getString("stepLabel")); // NOI18N
         leftInfoPanel.add(stepLabel);
 
-        stepTextField.setText("jTextField2");
-        leftInfoPanel.add(stepTextField);
+        stepValueLabel.setText("jLabel1");
+        leftInfoPanel.add(stepValueLabel);
 
         infoPanel.add(leftInfoPanel, java.awt.BorderLayout.CENTER);
 
@@ -114,9 +121,14 @@ public class GameBoardPanel extends javax.swing.JPanel {
     private javax.swing.JLabel questionLabel;
     private javax.swing.JPanel questionPanel;
     private javax.swing.JLabel regionLabel;
-    private javax.swing.JTextField regionTextField;
+    private javax.swing.JLabel regionValueLabel;
     private javax.swing.JPanel rightInfoPanel;
     private javax.swing.JLabel stepLabel;
-    private javax.swing.JTextField stepTextField;
+    private javax.swing.JLabel stepValueLabel;
     // End of variables declaration//GEN-END:variables
+
+    private void initData() {
+        regionValueLabel.setText(gameModel.getRegion().toString());
+        stepValueLabel.setText(gameModel.getStepInfo());
+    }
 }

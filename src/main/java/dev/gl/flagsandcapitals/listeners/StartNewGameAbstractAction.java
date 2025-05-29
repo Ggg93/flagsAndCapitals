@@ -29,9 +29,7 @@ public class StartNewGameAbstractAction extends AbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        GameModel gameModel = new GameModel(mw, parent.getRegion());
-        
-        mw.setGameModel(gameModel);
+        mw.setGameModel(new GameModel(mw, parent.getRegion()));
         mw.setMainWindowMode(MainWindowMode.PLAYING);
         
         LOGGER.log(Level.FINE, parent.getName() + " closed by user");

@@ -43,9 +43,9 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="regionTextField">
+            <Component class="javax.swing.JLabel" name="regionValueLabel">
               <Properties>
-                <Property name="text" type="java.lang.String" value="jTextField1"/>
+                <Property name="text" type="java.lang.String" value="jLabel1"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="stepLabel">
@@ -55,9 +55,9 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="stepTextField">
+            <Component class="javax.swing.JLabel" name="stepValueLabel">
               <Properties>
-                <Property name="text" type="java.lang.String" value="jTextField2"/>
+                <Property name="text" type="java.lang.String" value="jLabel1"/>
               </Properties>
             </Component>
           </SubComponents>
