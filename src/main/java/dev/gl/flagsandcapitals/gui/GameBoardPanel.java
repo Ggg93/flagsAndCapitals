@@ -2,17 +2,22 @@ package dev.gl.flagsandcapitals.gui;
 
 import static dev.gl.flagsandcapitals.enums.GameMode.CAPITALS;
 import static dev.gl.flagsandcapitals.enums.GameMode.FLAGS;
+import dev.gl.flagsandcapitals.enums.Language;
 import static dev.gl.flagsandcapitals.enums.Language.EN;
 import dev.gl.flagsandcapitals.models.GameModel;
 import dev.gl.flagsandcapitals.utils.ButtonFilter;
+import dev.gl.flagsandcapitals.utils.ButtonKeyListener;
 import dev.gl.flagsandcapitals.utils.Configuration;
 import dev.gl.flagsandcapitals.utils.logging.Logging;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -160,6 +165,10 @@ public class GameBoardPanel extends javax.swing.JPanel {
         rightInfoPanel.add(keyLabel);
         JLabel keyNumber = new JLabel(gameModel.getHints().toString());
         rightInfoPanel.add(keyNumber);
+        String helpText = Configuration.getLang() == Language.EN ? "Help" : "Подсказка";
+        JButton helpButton = new JButton();
+        helpButton.setText(helpText);
+        rightInfoPanel.add(helpButton);
 
         // questionLabel
         String questionLabelText = null;
@@ -219,8 +228,10 @@ public class GameBoardPanel extends javax.swing.JPanel {
                 break;
         }
         
+        List<JTextField> textFields = new ArrayList<>();
         for (int i = 0; i < answer.length(); i++) {
             JTextField letterField = new JTextField();
+            textFields.add(letterField);
             letterField.setMaximumSize(new Dimension(20, Integer.MAX_VALUE));
             letterField.setPreferredSize(new Dimension(20, 40));
             letterField.setHorizontalAlignment(JTextField.CENTER);
@@ -230,6 +241,16 @@ public class GameBoardPanel extends javax.swing.JPanel {
             if (i == 0) {
                 final JTextField firstField = letterField;
                 SwingUtilities.invokeLater(() -> firstField.requestFocusInWindow());
+            }
+        }
+        
+        // adding listeners to shift the focus
+        for (int i = 0; i < textFields.size(); i++) {
+            JTextField textField = textFields.get(i);
+            ButtonKeyListener buttonKeyListener = new ButtonKeyListener();
+            textField.addKeyListener(buttonKeyListener);
+            if (i < textFields.size() - 1) {
+                buttonKeyListener.setNextFieldToBeFocused(textFields.get(i + 1));
             }
         }
         lettersPanel.revalidate();
