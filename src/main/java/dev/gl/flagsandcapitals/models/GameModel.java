@@ -27,7 +27,7 @@ public class GameModel {
     private Region region;
     private Integer questionId;
     private Integer lives;
-    private Integer initialAvailableHints;
+    private Integer hints;
     private Integer hintRate;
     private List<DbGeography> questions;
     
@@ -39,7 +39,7 @@ public class GameModel {
         difficulty = Configuration.getDifficulty();
         questionId = 1;
         lives = difficulty.getLives();
-        initialAvailableHints = difficulty.getInitialAvailableHints();
+        hints = difficulty.getInitialAvailableHints();
         hintRate = difficulty.getHintRate();
         questions = loadQuestionsFromDB();
     }
@@ -83,8 +83,8 @@ public class GameModel {
         return lives;
     }
 
-    public Integer getInitialAvailableHints() {
-        return initialAvailableHints;
+    public Integer getHints() {
+        return hints;
     }
 
     private List<DbGeography> loadQuestionsFromDB() {
@@ -96,6 +96,8 @@ public class GameModel {
         return questionList;
     }
     
-    
+    public DbGeography getNextQuestion() {
+        return questions.get(questionId - 1);
+    }
     
 }

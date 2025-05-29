@@ -1,17 +1,24 @@
 package dev.gl.flagsandcapitals.gui;
 
+import static dev.gl.flagsandcapitals.enums.GameMode.CAPITALS;
+import static dev.gl.flagsandcapitals.enums.GameMode.FLAGS;
+import static dev.gl.flagsandcapitals.enums.Language.EN;
 import dev.gl.flagsandcapitals.models.GameModel;
 import dev.gl.flagsandcapitals.utils.Configuration;
 import dev.gl.flagsandcapitals.utils.logging.Logging;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  *
  * @author gl
  */
 public class GameBoardPanel extends javax.swing.JPanel {
-    
+
     private static final Logger LOGGER = Logging.getLocalLogger(GameBoardPanel.class);
+    private ImageIcon heartIcon = new ImageIcon(this.getClass().getClassLoader().getResource("images/icons8-heart-20.png"));
+    private ImageIcon keyIcon = new ImageIcon(this.getClass().getClassLoader().getResource("images/icons8-key-20.png"));
     private GameModel gameModel;
 
     public GameBoardPanel() {
@@ -22,7 +29,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
         this.gameModel = gameModel;
         initData();
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -78,7 +85,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
 
         mainPanel.add(questionPanel, java.awt.BorderLayout.NORTH);
 
-        flagOrCapitalPanel.setLayout(new java.awt.BorderLayout());
+        flagOrCapitalPanel.setLayout(new java.awt.GridBagLayout());
         mainPanel.add(flagOrCapitalPanel, java.awt.BorderLayout.CENTER);
 
         add(mainPanel, java.awt.BorderLayout.CENTER);
@@ -130,5 +137,52 @@ public class GameBoardPanel extends javax.swing.JPanel {
     private void initData() {
         regionValueLabel.setText(gameModel.getRegion().toString());
         stepValueLabel.setText(gameModel.getStepInfo());
+
+        // rightInfoPanel
+        JLabel heartLabel = new JLabel(heartIcon);
+        rightInfoPanel.add(heartLabel);
+        JLabel heartNumber = new JLabel(gameModel.getLives().toString());
+        rightInfoPanel.add(heartNumber);
+        JLabel keyLabel = new JLabel(keyIcon);
+        rightInfoPanel.add(keyLabel);
+        JLabel keyNumber = new JLabel(gameModel.getHints().toString());
+        rightInfoPanel.add(keyNumber);
+
+        // questionLabel
+        String questionLabelText = null;
+        switch (gameModel.getGameMode()) {
+            case FLAGS:
+                questionLabelText = Configuration.getResourceBundle().getString("questionLabelFlag");
+                break;
+            case CAPITALS:
+                questionLabelText = Configuration.getResourceBundle().getString("questionLabelCapital");
+                break;
+        }
+        questionLabel.setText(questionLabelText);
+
+        // flagOrCapitalPanel
+        switch (gameModel.getGameMode()) {
+            case FLAGS:
+                String link = "images/flags/svg/" + gameModel.getNextQuestion().getIsoCode().toLowerCase() + ".svg";
+                ImageIcon flagIcon = new ImageIcon(this.getClass().getClassLoader().getResource(link));
+                JLabel flag = new JLabel(flagIcon);
+                flagOrCapitalPanel.add(flag);
+                break;
+            case CAPITALS:
+                String capital = null;
+                switch (Configuration.getLang()) {
+                    case EN:
+                        capital = gameModel.getNextQuestion().getCapitalEn();
+                        break;
+                    case RU:
+                        capital = gameModel.getNextQuestion().getCapitalRu();
+                        break;
+                }
+                JLabel capitalLabel = new JLabel(capital);
+                flagOrCapitalPanel.add(capitalLabel);
+                break;
+        }
+        flagOrCapitalPanel.revalidate();
+        flagOrCapitalPanel.repaint();
     }
 }
