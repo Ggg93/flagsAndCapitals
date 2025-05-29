@@ -2,7 +2,7 @@ package dev.gl.flagsandcapitals.gui;
 
 import dev.gl.flagsandcapitals.enums.Region;
 import dev.gl.flagsandcapitals.listeners.OkDisposingAction;
-import dev.gl.flagsandcapitals.listeners.StartNewGameLAbstractAction;
+import dev.gl.flagsandcapitals.listeners.StartNewGameAbstractAction;
 import dev.gl.flagsandcapitals.utils.Configuration;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
@@ -28,9 +28,18 @@ public class ChoosingRegionDialog extends javax.swing.JDialog {
         setupIcon();
         
         initRegionCombobox();
-        okButtonAction = new StartNewGameLAbstractAction(this);
+        okButtonAction = new StartNewGameAbstractAction(this, (MainWindow) parent);
         attachListenerToOkButton();
         createKeyListeners();
+    }
+    
+    @Override
+    public String getName() {
+        return this.getClass().getSimpleName();
+    }
+    
+    public Region getRegion() {
+        return (Region) regionComboBox.getSelectedItem();
     }
 
     @SuppressWarnings("unchecked")
