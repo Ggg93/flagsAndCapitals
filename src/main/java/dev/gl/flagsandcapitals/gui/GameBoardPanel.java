@@ -4,13 +4,19 @@ import static dev.gl.flagsandcapitals.enums.GameMode.CAPITALS;
 import static dev.gl.flagsandcapitals.enums.GameMode.FLAGS;
 import static dev.gl.flagsandcapitals.enums.Language.EN;
 import dev.gl.flagsandcapitals.models.GameModel;
+import dev.gl.flagsandcapitals.utils.ButtonFilter;
 import dev.gl.flagsandcapitals.utils.Configuration;
 import dev.gl.flagsandcapitals.utils.logging.Logging;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.text.AbstractDocument;
 import org.apache.batik.swing.JSVGCanvas;
 
 /**
@@ -20,6 +26,10 @@ import org.apache.batik.swing.JSVGCanvas;
 public class GameBoardPanel extends javax.swing.JPanel {
 
     private static final Logger LOGGER = Logging.getLocalLogger(GameBoardPanel.class);
+    private static final Font BUTTON_FONT = new Font("SansSerif", Font.PLAIN, 18);
+    private static final Font QUESTION_FONT = new Font("SansSerif", Font.PLAIN, 24);
+    private static final Font CAPITAL_FONT = new Font("SansSerif", Font.PLAIN, 32);
+    private static final ButtonFilter BUTTON_FILTER = new ButtonFilter();
     private ImageIcon heartIcon = new ImageIcon(this.getClass().getClassLoader().getResource("images/icons8-heart-20.png"));
     private ImageIcon keyIcon = new ImageIcon(this.getClass().getClassLoader().getResource("images/icons8-key-20.png"));
     private GameModel gameModel;
@@ -49,7 +59,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
         questionLabel = new javax.swing.JLabel();
         flagOrCapitalPanel = new javax.swing.JPanel();
         controlPanel = new javax.swing.JPanel();
-        lettersButton = new javax.swing.JPanel();
+        lettersPanel = new javax.swing.JPanel();
         buttonsPanel = new javax.swing.JPanel();
         leftButtonPanel = new javax.swing.JPanel();
         endGameButton = new javax.swing.JButton();
@@ -94,7 +104,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
         add(mainPanel, java.awt.BorderLayout.CENTER);
 
         controlPanel.setLayout(new java.awt.BorderLayout());
-        controlPanel.add(lettersButton, java.awt.BorderLayout.NORTH);
+        controlPanel.add(lettersPanel, java.awt.BorderLayout.NORTH);
 
         buttonsPanel.setLayout(new java.awt.BorderLayout());
 
@@ -126,7 +136,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
     private javax.swing.JPanel infoPanel;
     private javax.swing.JPanel leftButtonPanel;
     private javax.swing.JPanel leftInfoPanel;
-    private javax.swing.JPanel lettersButton;
+    private javax.swing.JPanel lettersPanel;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JLabel questionLabel;
     private javax.swing.JPanel questionPanel;
@@ -162,6 +172,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
                 break;
         }
         questionLabel.setText(questionLabelText);
+        questionLabel.setFont(QUESTION_FONT);
 
         // flagOrCapitalPanel
         switch (gameModel.getGameMode()) {
@@ -190,10 +201,40 @@ public class GameBoardPanel extends javax.swing.JPanel {
                         break;
                 }
                 JLabel capitalLabel = new JLabel(capital);
+                capitalLabel.setFont(CAPITAL_FONT);
                 flagOrCapitalPanel.add(capitalLabel);
                 break;
         }
         flagOrCapitalPanel.revalidate();
         flagOrCapitalPanel.repaint();
+        
+        // lettersButton
+        String answer = null;
+        switch (Configuration.getLang()) {
+            case EN:
+                answer = gameModel.getNextQuestion().getCountryEn();
+                break;
+            case RU:
+                answer = gameModel.getNextQuestion().getCountryRu();
+                break;
+        }
+        
+        for (int i = 0; i < answer.length(); i++) {
+            JTextField letterField = new JTextField();
+            letterField.setMaximumSize(new Dimension(20, Integer.MAX_VALUE));
+            letterField.setPreferredSize(new Dimension(20, 40));
+            letterField.setHorizontalAlignment(JTextField.CENTER);
+            letterField.setFont(BUTTON_FONT);
+            ((AbstractDocument) letterField.getDocument()).setDocumentFilter(BUTTON_FILTER);
+            lettersPanel.add(letterField);
+            if (i == 0) {
+                final JTextField firstField = letterField;
+                SwingUtilities.invokeLater(() -> firstField.requestFocusInWindow());
+            }
+        }
+        lettersPanel.revalidate();
+        lettersPanel.repaint();
+        
+        
     }
 }
