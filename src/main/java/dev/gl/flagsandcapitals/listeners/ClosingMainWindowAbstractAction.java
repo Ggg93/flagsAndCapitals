@@ -28,7 +28,8 @@ public class ClosingMainWindowAbstractAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         try {
             // blocks short cut if the player is not playng now
-            if (parent.getMainWindowMode() == MainWindowMode.PLAYING) {
+            if (parent.getMainWindowMode() == MainWindowMode.PLAYING
+                    && !parent.isGameFinished()) {
                 int answer = JOptionPane.showConfirmDialog(parent,
                         Configuration.getResourceBundle().getString("backToMainMenuDualogQuestion"),
                         Configuration.getResourceBundle().getString("title"),

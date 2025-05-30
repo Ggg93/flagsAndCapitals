@@ -3,7 +3,6 @@ package dev.gl.flagsandcapitals.gui;
 import dev.gl.flagsandcapitals.db.entities.DbGeography;
 import static dev.gl.flagsandcapitals.enums.GameMode.CAPITALS;
 import static dev.gl.flagsandcapitals.enums.GameMode.FLAGS;
-import static dev.gl.flagsandcapitals.enums.Language.EN;
 import dev.gl.flagsandcapitals.enums.LetterButtonState;
 import static dev.gl.flagsandcapitals.enums.LetterButtonState.OK;
 import dev.gl.flagsandcapitals.listeners.AnswerButtonActionListener;
@@ -13,7 +12,6 @@ import dev.gl.flagsandcapitals.models.GameModel;
 import dev.gl.flagsandcapitals.utils.ButtonDocumentListener;
 import dev.gl.flagsandcapitals.utils.ButtonFilter;
 import dev.gl.flagsandcapitals.utils.ButtonFocusListener;
-import dev.gl.flagsandcapitals.utils.ButtonKeyListener;
 import dev.gl.flagsandcapitals.utils.Configuration;
 import dev.gl.flagsandcapitals.utils.logging.Logging;
 import java.awt.Color;
@@ -428,4 +426,8 @@ public class GameBoardPanel extends javax.swing.JPanel {
         lettersPanel.repaint();
     }
 
+    public GameModel getGameModel() {
+        return gameModel;
+    }
+    
 }

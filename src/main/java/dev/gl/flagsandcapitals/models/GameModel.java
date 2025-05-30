@@ -36,6 +36,7 @@ public class GameModel {
     private Integer hints;
     private Integer rightAnswers;
     private List<DbGeography> questions;
+    private Boolean isGameFinished = false;
 
     public GameModel(MainWindow mw, Region region) {
         this.mw = mw;
@@ -43,7 +44,7 @@ public class GameModel {
         con = HyperConnection.getInstance();
         gameMode = Configuration.getGameMode();
         difficulty = Configuration.getDifficulty();
-        questionId = 1;
+        questionId = 0;
         lives = difficulty.getLives();
         hints = difficulty.getInitialAvailableHints();
         rightAnswers = 0;
@@ -71,6 +72,7 @@ public class GameModel {
 
         // save result to DB
         game.setIsWin(false);
+        isGameFinished = true;
         DbGames.saveNewEntryInDb(game, con);
 
         // block answer button
@@ -85,6 +87,7 @@ public class GameModel {
 
         // save result to DB
         game.setIsWin(true);
+        isGameFinished = true;
         DbGames.saveNewEntryInDb(game, con);
 
         // block answer button
@@ -105,7 +108,7 @@ public class GameModel {
 
     public String getStepInfo() {
         StringBuilder sb = new StringBuilder();
-        sb.append(questionId);
+        sb.append(questionId + 1);
         sb.append(" / ");
         sb.append(questions.size());
         return sb.toString();
@@ -129,7 +132,7 @@ public class GameModel {
     }
 
     public DbGeography getNextQuestion() {
-        return questions.get(questionId - 1);
+        return questions.get(questionId);
     }
 
     public DbGeography useHint() {
@@ -163,6 +166,12 @@ public class GameModel {
                 lose(true);
                 return;
             }
+            
+            if (questionId.equals(questions.size() - 1)) {
+                win();
+                return;
+            }
+            
         } else {
             // case: right answer
             game.setScore(game.getScore() + difficulty.getScoreRate());
@@ -200,4 +209,8 @@ public class GameModel {
         gameBoardPanel.updateLettersPanel();
     }
 
+    public Boolean getIsGameFinished() {
+        return isGameFinished;
+    }
+    
 }

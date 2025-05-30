@@ -168,4 +168,12 @@ public class MainWindow extends javax.swing.JFrame {
         return gameBoardPanel;
     }
     
+    public Boolean isGameFinished() {
+        if (gameBoardPanel != null && gameBoardPanel.getGameModel() != null) {
+            return gameBoardPanel.getGameModel().getIsGameFinished();
+        } 
+        
+        return true;
+    }
+    
 }
