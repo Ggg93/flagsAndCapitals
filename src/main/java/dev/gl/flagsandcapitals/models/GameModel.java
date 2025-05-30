@@ -10,7 +10,6 @@ import dev.gl.flagsandcapitals.enums.Region;
 import dev.gl.flagsandcapitals.gui.GameBoardPanel;
 import dev.gl.flagsandcapitals.gui.MainWindow;
 import dev.gl.flagsandcapitals.utils.Configuration;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +23,7 @@ import javax.swing.JOptionPane;
  */
 public class GameModel {
 
+    private static final ResourceBundle RB = Configuration.getResourceBundle();
     private HyperConnection con;
     private MainWindow mw;
     private GameBoardPanel gameBoardPanel;
@@ -153,16 +153,15 @@ public class GameModel {
                 .equalsIgnoreCase(getNextQuestion().getCountryLocalized());
 
         if (!isAnswerRight) {
+            game.setMistakes(game.getMistakes() + 1);
+            lives--;
+            gameBoardPanel.updateLivesNumberLabel(lives);
             // case: wrong answer
             gameBoardPanel.showHiddenHint(); // show right answer
             
-            if (lives == 1) {
+            if (lives == 0) {
                 lose(true);
                 return;
-            } else {
-                lives--;
-                game.setMistakes(game.getMistakes() + 1);
-                gameBoardPanel.updateLivesNumberLabel(lives);
             }
         } else {
             // case: right answer
@@ -185,14 +184,20 @@ public class GameModel {
         LetterButtonState state = isAnswerRight 
                 ? LetterButtonState.OK 
                 : LetterButtonState.WRONG;
-        gameBoardPanel.setTextFieldsState(state);
         
-        ResourceBundle rb = Configuration.getResourceBundle();
-        gameBoardPanel.setAnswerButtonText(rb.getString("answerButtonOptionNext"));
+        gameBoardPanel.setAnswerButtonText(RB.getString("answerButtonOptionNext"));
+        gameBoardPanel.setTextFieldsState(state);
+        gameBoardPanel.setAnswerButtonEnabled(true);
     }
 
     public void setNextQuestion() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        questionId++;
+        gameBoardPanel.updateStepValue();
+        gameBoardPanel.setHintButtonEnabled(true);
+        gameBoardPanel.setAnswerButtonText(RB.getString("answerButtonOptionAnswer"));
+        gameBoardPanel.setAnswerButtonEnabled(false);
+        gameBoardPanel.updateFlagOrCapitalPanel();
+        gameBoardPanel.updateLettersPanel();
     }
 
 }

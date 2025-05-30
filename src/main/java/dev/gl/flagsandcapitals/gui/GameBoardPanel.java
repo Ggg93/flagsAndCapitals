@@ -46,7 +46,7 @@ import org.apache.batik.swing.JSVGCanvas;
  * @author gl
  */
 public class GameBoardPanel extends javax.swing.JPanel {
-    
+
     private static final Logger LOGGER = Logging.getLocalLogger(GameBoardPanel.class);
     private static final Font BUTTON_FONT = new Font("SansSerif", Font.PLAIN, 18);
     private static final Font QUESTION_FONT = new Font("SansSerif", Font.PLAIN, 24);
@@ -63,22 +63,22 @@ public class GameBoardPanel extends javax.swing.JPanel {
     private AnswerButtonActionListener answerButtonListener;
     private HiddenHintAbstractListener hiddenHintListener;
     private static Border regularTextFieldBorder;
-    
+
     public GameBoardPanel() {
         initComponents();
     }
-    
+
     public void setGameModel(GameModel gameModel) {
         this.gameModel = gameModel;
         initData();
-        
+
         hintButtonListener = new HintButtonAbstractAction(this, gameModel);
         answerButtonListener = new AnswerButtonActionListener(this, gameModel);
         hiddenHintListener = new HiddenHintAbstractListener(this, gameModel);
         bindActionsToButtons();
         createKeyBindings();
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -175,7 +175,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
 
     private void initData() {
         regionValueLabel.setText(gameModel.getRegion().toString());
-        stepValueLabel.setText(gameModel.getStepInfo());
+        updateStepValue();
 
         // rightInfoPanel
         // lives
@@ -211,31 +211,172 @@ public class GameBoardPanel extends javax.swing.JPanel {
         questionLabel.setFont(QUESTION_FONT);
 
         // flagOrCapitalPanel
+        updateFlagOrCapitalPanel();
+
+        // lettersButton
+        updateLettersPanel();
+    }
+
+    public void setHintsNumber(Integer hints, Boolean subtracting) {
+        hintNumberLabel.setText(hints.toString());
+        String message = (subtracting ? "-1 " : "+1 ")
+                + Configuration.getResourceBundle().getString("hintButton")
+                + "!";
+        showPopup(hintButton, message, 1000, 1500);
+        setHintButtonEnabled(false);
+    }
+
+    public void showPopup(Component parent,
+            String message,
+            int fadeDurationMs,
+            int visibleDurationMs) {
+        PopupWindow.showPopupWindow(parent, message, fadeDurationMs, visibleDurationMs);
+    }
+
+    public void setAnswer(DbGeography answer) {
+        String country = answer.getCountryLocalized();
+        for (int i = 0; i < country.length(); i++) {
+            char ch = country.charAt(i);
+            textFields.get(i).setText(Character.toString(ch));
+        }
+
+        setAnswerButtonEnabled(true);
+    }
+
+    public Boolean isHintButtonEnabled() {
+        return hintButton.isEnabled();
+    }
+
+    public void setHintButtonEnabled(boolean enabled) {
+        hintButton.setEnabled(enabled);
+    }
+
+    public void clickAnswerButton() {
+        if (answerButton.isEnabled()) {
+            answerButton.doClick();
+        }
+    }
+
+    public Boolean isAnswerButtonEnabled() {
+        return answerButton.isEnabled();
+    }
+
+    public void setAnswerButtonEnabled(boolean allLettersFilled) {
+        answerButton.setEnabled(allLettersFilled);
+    }
+
+    public String getAnswerButtonText() {
+        return answerButton.getText();
+    }
+
+    public void setAnswerButtonText(String buttonText) {
+        answerButton.setText(buttonText);
+    }
+
+    public void setAnswerButtonFocused() {
+        answerButton.requestFocusInWindow();
+        this.revalidate();
+        this.repaint();
+    }
+
+    public void updateLivesNumberLabel(Integer lives) {
+        livesNumberLabel.setText(lives.toString());
+        String message = "-1 "
+                + Configuration.getResourceBundle().getString("liveLabel")
+                + "!";
+        showPopup(livesNumberLabel, message, 1000, 1500);
+    }
+
+    private void bindActionsToButtons() {
+        hintButton.addActionListener(hintButtonListener);
+        answerButton.addActionListener(answerButtonListener);
+    }
+
+    private void createKeyBindings() {
+        InputMap inputMap = this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        ActionMap actionMap = this.getActionMap();
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK), "hint");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0), "hiddenHint");
+        actionMap.put("hint", hintButtonListener);
+        actionMap.put("hiddenHint", hiddenHintListener);
+    }
+
+    public String getUsersAnswer() {
+        return textFields.stream()
+                .map(JTextField::getText)
+                .collect(Collectors.joining());
+    }
+
+    public void blockLetterButtons() {
+        textFields.stream().forEach(field -> field.setFocusable(false));
+//        textFields.stream().forEach(field -> field.setEnabled(false));
+    }
+
+    public void setTextFieldsState(LetterButtonState state) {
+        textFields.stream()
+                .forEach(field -> {
+                    switch (state) {
+                        case OK:
+                            field.setBorder(new LineBorder(Color.GREEN, 2));
+                            break;
+                        case WRONG:
+                            field.setBorder(new LineBorder(Color.RED, 2));
+                            break;
+                        case REGULAR:
+                            field.setBorder(regularTextFieldBorder);
+                            break;
+                    }
+                });
+        this.revalidate();
+        this.repaint();
+    }
+
+    public void showHiddenHint() {
+        String message = gameModel.getNextQuestion().getCountryLocalized();
+        showPopup(answerButton, message, 500, 1000);
+    }
+
+    public void showAnswerNotReadyMessage() {
+        String message = Configuration.getResourceBundle().getString("answerNotPreparedMessage");
+        showPopup(answerButton, message, 500, 1000);
+    }
+
+    public boolean areAllLettersFilled() {
+        for (JTextField textField : textFields) {
+            String text = textField.getText();
+            if (text == null || text.isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public void updateStepValue() {
+        stepValueLabel.setText(gameModel.getStepInfo());
+    }
+
+    public void updateFlagOrCapitalPanel() {
+        flagOrCapitalPanel.removeAll();
+
         switch (gameModel.getGameMode()) {
             case FLAGS:
                 try {
                     String link = "images/flags/svg/" + gameModel.getNextQuestion().getIsoCode().toLowerCase() + ".svg";
                     URL url = this.getClass().getClassLoader().getResource(link);
                     String uri = url.toURI().toString();
-                    
+
                     JSVGCanvas svg = new JSVGCanvas();
                     svg.setURI(uri);
                     flagOrCapitalPanel.add(svg);
                 } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
                 }
-                
+
                 break;
             case CAPITALS:
-                String capital = null;
-                switch (Configuration.getLang()) {
-                    case EN:
-                        capital = gameModel.getNextQuestion().getCapitalEn();
-                        break;
-                    case RU:
-                        capital = gameModel.getNextQuestion().getCapitalRu();
-                        break;
-                }
+                String capital = gameModel.getNextQuestion().getCapitalLocalized();
                 JLabel capitalLabel = new JLabel(capital);
                 capitalLabel.setFont(CAPITAL_FONT);
                 flagOrCapitalPanel.add(capitalLabel);
@@ -243,19 +384,14 @@ public class GameBoardPanel extends javax.swing.JPanel {
         }
         flagOrCapitalPanel.revalidate();
         flagOrCapitalPanel.repaint();
+    }
 
-        // lettersButton
-        String answer = null;
-        switch (Configuration.getLang()) {
-            case EN:
-                answer = gameModel.getNextQuestion().getCountryEn();
-                break;
-            case RU:
-                answer = gameModel.getNextQuestion().getCountryRu();
-                break;
-        }
-        
+    public void updateLettersPanel() {
+        lettersPanel.removeAll();
+
         textFields = new ArrayList<>();
+        String answer = gameModel.getNextQuestion().getCountryLocalized();
+
         for (int i = 0; i < answer.length(); i++) {
             JTextField letterField = new JTextField();
             textFields.add(letterField);
@@ -286,145 +422,6 @@ public class GameBoardPanel extends javax.swing.JPanel {
         }
         lettersPanel.revalidate();
         lettersPanel.repaint();
-        
-    }
-    
-    public void setHintsNumber(Integer hints, Boolean subtracting) {
-        hintNumberLabel.setText(hints.toString());
-        String message = (subtracting ? "-1 " : "+1 ")
-                + Configuration.getResourceBundle().getString("hintButton")
-                + "!";
-        showPopup(hintButton, message, 1000, 1500);
-        setHintButtonEnabled(false);
-    }
-    
-    public void showPopup(Component parent,
-            String message,
-            int fadeDurationMs,
-            int visibleDurationMs) {
-        PopupWindow.showPopupWindow(parent, message, fadeDurationMs, visibleDurationMs);
-    }
-    
-    public void setAnswer(DbGeography answer) {
-        String country = answer.getCountryLocalized();
-        for (int i = 0; i < country.length(); i++) {
-            char ch = country.charAt(i);
-            textFields.get(i).setText(Character.toString(ch));
-        }
-        
-        setAnswerButtonEnabled(true);
-    }
-    
-    public Boolean isHintButtonEnabled() {
-        return hintButton.isEnabled();
-    }
-    
-    public void setHintButtonEnabled(boolean enabled) {
-        hintButton.setEnabled(enabled);
-    }
-    
-    public void clickAnswerButton() {
-        if (answerButton.isEnabled()) {
-            answerButton.doClick();
-        }
-    }
-    
-    public Boolean isAnswerButtonEnabled() {
-        return answerButton.isEnabled();
-    }
-    
-    public void setAnswerButtonEnabled(boolean allLettersFilled) {
-        answerButton.setEnabled(allLettersFilled);
-    }
-    
-    public String getAnswerButtonText() {
-        return answerButton.getText();
-    }
-    
-    public void setAnswerButtonText(String buttonText) {
-        answerButton.setText(buttonText);
-    }
-    
-    public void setAnswerButtonFocused() {
-        answerButton.requestFocusInWindow();
-        this.revalidate();
-        this.repaint();
-//        final JButton b = answerButton;
-//        SwingUtilities.invokeLater(() -> b.requestFocusInWindow());
-    }
-    
-    public void updateLivesNumberLabel(Integer lives) {
-        livesNumberLabel.setText(lives.toString());
-        String message = "-1 "
-                + Configuration.getResourceBundle().getString("liveLabel")
-                + "!";
-        showPopup(livesNumberLabel, message, 1000, 1500);
-    }
-    
-    private void bindActionsToButtons() {
-        hintButton.addActionListener(hintButtonListener);
-        answerButton.addActionListener(answerButtonListener);
-    }
-    
-    private void createKeyBindings() {
-        InputMap inputMap = this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        ActionMap actionMap = this.getActionMap();
-        
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK), "hint");
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0), "hiddenHint");
-        actionMap.put("hint", hintButtonListener);
-        actionMap.put("hiddenHint", hiddenHintListener);
-    }
-    
-    public String getUsersAnswer() {
-        return textFields.stream()
-                .map(JTextField::getText)
-                .collect(Collectors.joining());
-    }
-    
-    public void blockLetterButtons() {
-        textFields.stream().forEach(field -> field.setFocusable(false));
-//        textFields.stream().forEach(field -> field.setEnabled(false));
-    }
-    
-    public void setTextFieldsState(LetterButtonState state) {
-        textFields.stream()
-                .forEach(field -> {
-                    switch (state) {
-                        case OK:
-                            field.setBorder(new LineBorder(Color.GREEN, 2));
-                            break;
-                        case WRONG:
-                            field.setBorder(new LineBorder(Color.RED, 2));
-                            break;
-                        case REGULAR:
-                            field.setBorder(regularTextFieldBorder);
-                            break;
-                    }
-                });
-        this.revalidate();
-        this.repaint();
-    }
-    
-    public void showHiddenHint() {
-        String message = gameModel.getNextQuestion().getCountryLocalized();
-        showPopup(answerButton, message, 500, 1000);
-    }
-    
-    public void showAnswerNotReadyMessage() {
-        String message = Configuration.getResourceBundle().getString("answerNotPreparedMessage");
-        showPopup(answerButton, message, 500, 1000);
     }
 
-    public boolean areAllLettersFilled() {
-        for (JTextField textField : textFields) {
-            String text = textField.getText();
-            if (text == null || text.isEmpty()) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-    
 }

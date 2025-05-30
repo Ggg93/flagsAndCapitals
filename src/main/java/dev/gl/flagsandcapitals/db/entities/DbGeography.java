@@ -147,6 +147,19 @@ public class DbGeography {
     public Region getRegion() {
         return region;
     }
+    
+    public String getCapitalLocalized() {
+        String capital = null;
+        switch (Configuration.getLang()) {
+            case EN:
+                capital = capitalEn;
+                break;
+            case RU:
+                capital = capitalRu;
+                break;
+        }
+        return capital;
+    }
 
     public String getCountryLocalized() {
         String country = null;
