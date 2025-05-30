@@ -369,6 +369,8 @@ public class GameBoardPanel extends javax.swing.JPanel {
                     String uri = url.toURI().toString();
 
                     JSVGCanvas svg = new JSVGCanvas();
+                    svg.setBackground(new Color(0, 0, 0, 0));
+//                    svg.setDocumentState(JSVGCanvas.ALWAYS_DYNAMIC);
                     svg.setURI(uri);
                     flagOrCapitalPanel.add(svg);
                 } catch (Exception e) {
