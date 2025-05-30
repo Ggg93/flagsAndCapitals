@@ -22,7 +22,7 @@ public class ChoosingRegionDialogAbstractAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         // prevent opening when player has been already playing
         if (mw.getMainWindowMode() == MainWindowMode.PLAYING) {
-            mw.getGameBoardPanel().getAnswerButton().doClick();
+            mw.getGameBoardPanel().clickAnswerButton();
             return;
         }
         

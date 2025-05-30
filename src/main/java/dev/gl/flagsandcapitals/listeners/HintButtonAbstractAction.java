@@ -28,7 +28,7 @@ public class HintButtonAbstractAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        if (!gameBoardPanel.getHintButton().isEnabled()) {
+        if (!gameBoardPanel.isHintButtonEnabled()) {
             return;
         }
         

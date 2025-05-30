@@ -131,6 +131,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
         buttonsPanel.setLayout(new java.awt.BorderLayout());
 
         answerButton.setText(Configuration.getResourceBundle().getString("answerButton")); // NOI18N
+        answerButton.setEnabled(false);
         centerButtonsPanel.add(answerButton);
 
         buttonsPanel.add(centerButtonsPanel, java.awt.BorderLayout.CENTER);
@@ -176,6 +177,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
         String hintButtonText = Configuration.getResourceBundle().getString("hintButton");
         hintButton = new JButton();
         hintButton.setText(hintButtonText);
+        setHintButtonEnabled(gameModel.getHints() > 0);
         rightInfoPanel.add(hintButton);
 
         // questionLabel
@@ -256,7 +258,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
         // adding listeners to shift the focus
         for (int i = 0; i < textFields.size(); i++) {
             JTextField textField = textFields.get(i);
-            ButtonKeyListener buttonKeyListener = new ButtonKeyListener();
+            ButtonKeyListener buttonKeyListener = new ButtonKeyListener(this, textFields);
             textField.addKeyListener(buttonKeyListener);
             if (i < textFields.size() - 1) {
                 buttonKeyListener.setNextFieldToBeFocused(textFields.get(i + 1));
@@ -270,12 +272,11 @@ public class GameBoardPanel extends javax.swing.JPanel {
 
     public void setHintsNumber(Integer hints) {
         hintNumberLabel.setText(hints.toString());
-        hintButton.setEnabled(hints > 0);
         String message = "-1 " 
                 + Configuration.getResourceBundle().getString("hintButton")
                 + "!";
         PopupWindow.showPopupWindow(hintButton, message, 1000, 1500);
-        hintButton.setEnabled(false);
+        setHintButtonEnabled(false);
     }
 
     public void setAnswer(DbGeography answer) {
@@ -284,14 +285,26 @@ public class GameBoardPanel extends javax.swing.JPanel {
             char ch = country.charAt(i);
             textFields.get(i).setText(Character.toString(ch));
         }
+        
+        setAnswerButtonEnabled(true);
     }
     
-    public JButton getHintButton() {
-        return hintButton;
+    public Boolean isHintButtonEnabled() {
+        return hintButton.isEnabled();
     }
-
-    public JButton getAnswerButton() {
-        return answerButton;
+    
+    public void setHintButtonEnabled(boolean enabled) {
+        hintButton.setEnabled(enabled);
+    }
+    
+    public void clickAnswerButton() {
+        if (answerButton.isEnabled()) {
+            answerButton.doClick();
+        }
+    }
+    
+    public void setAnswerButtonEnabled(boolean allLettersFilled) {
+        answerButton.setEnabled(allLettersFilled);
     }
     
     private void bindActionsToButtons() {
@@ -306,4 +319,6 @@ public class GameBoardPanel extends javax.swing.JPanel {
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK), "hint");
         actionMap.put("hint", hintButtonListener);
     }
+
+    
 }
