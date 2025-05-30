@@ -3,6 +3,7 @@ package dev.gl.flagsandcapitals.db.entities;
 import dev.gl.flagsandcapitals.db.common.HyperConnection;
 import dev.gl.flagsandcapitals.enums.GameMode;
 import dev.gl.flagsandcapitals.utils.logging.Logging;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -16,6 +17,28 @@ import java.util.logging.Logger;
  */
 public class DbGameMode {
     private static final Logger LOGGER = Logging.getLocalLogger(DbGameMode.class);
+
+    public static DbGameMode getRowByCode(HyperConnection con, Integer codeFilter) {
+        DbGameMode ans = null;
+        String sql = "SELECT * FROM game_mode WHERE code = ? LIMIT 1";
+        try (PreparedStatement pstmt = con.getCon().prepareStatement(sql)){
+            pstmt.setInt(1, codeFilter);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Integer id = rs.getInt(1);
+                Integer code = rs.getInt(2);
+                DbGameMode entry = new DbGameMode(id,
+                        GameMode.getGameModeByCode(code));
+                ans = entry;
+                break;
+            }
+            
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+        }
+        
+        return ans;
+    }
     
     private int id;
     private GameMode gameMode;

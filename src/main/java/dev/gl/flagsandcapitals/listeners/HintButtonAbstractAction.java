@@ -39,7 +39,7 @@ public class HintButtonAbstractAction extends AbstractAction {
         }
         
         gameBoardPanel.setAnswer(answer);
-        gameBoardPanel.setHintsNumber(gameModel.getHints());
+        gameBoardPanel.setHintsNumber(gameModel.getHints(), true);
     }
 
 }

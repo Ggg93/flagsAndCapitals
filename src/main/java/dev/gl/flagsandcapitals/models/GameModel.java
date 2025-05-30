@@ -1,17 +1,21 @@
 package dev.gl.flagsandcapitals.models;
 
 import dev.gl.flagsandcapitals.db.common.HyperConnection;
+import dev.gl.flagsandcapitals.db.entities.DbGames;
 import dev.gl.flagsandcapitals.db.entities.DbGeography;
 import dev.gl.flagsandcapitals.enums.Difficulty;
 import dev.gl.flagsandcapitals.enums.GameMode;
-import dev.gl.flagsandcapitals.enums.MainWindowMode;
+import dev.gl.flagsandcapitals.enums.LetterButtonState;
 import dev.gl.flagsandcapitals.enums.Region;
+import dev.gl.flagsandcapitals.gui.GameBoardPanel;
 import dev.gl.flagsandcapitals.gui.MainWindow;
 import dev.gl.flagsandcapitals.utils.Configuration;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,18 +23,20 @@ import javax.swing.JOptionPane;
  * @author gl
  */
 public class GameModel {
-    
+
     private HyperConnection con;
     private MainWindow mw;
+    private GameBoardPanel gameBoardPanel;
+    private DbGames game;
     private GameMode gameMode;
     private Difficulty difficulty;
     private Region region;
     private Integer questionId;
     private Integer lives;
     private Integer hints;
-    private Integer hintRate;
+    private Integer rightAnswers;
     private List<DbGeography> questions;
-    
+
     public GameModel(MainWindow mw, Region region) {
         this.mw = mw;
         this.region = region;
@@ -40,23 +46,49 @@ public class GameModel {
         questionId = 1;
         lives = difficulty.getLives();
         hints = difficulty.getInitialAvailableHints();
-        hintRate = difficulty.getHintRate();
+        rightAnswers = 0;
         questions = loadQuestionsFromDB();
+
+        game = new DbGames(null, gameMode, this.region, false, 0, 0, 0);
+    }
+
+    public void setGameBoardPanel(GameBoardPanel gameBoardPanel) {
+        this.gameBoardPanel = gameBoardPanel;
     }
 
     /**
      * logic for losing game
-     * @param showJOptionPane 
+     *
+     * @param showJOptionPane
      */
     public void lose(boolean showJOptionPane) {
+        // show dialog for user
         if (showJOptionPane) {
-            JOptionPane.showConfirmDialog(mw, Configuration.getResourceBundle().getString("gameModelLossMessage"),
-                Configuration.getResourceBundle().getString("title"), 
-                JOptionPane.OK_OPTION, 
-                JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(mw, Configuration.getResourceBundle().getString("gameModelLossMessage"),
+                    Configuration.getResourceBundle().getString("title"),
+                    JOptionPane.INFORMATION_MESSAGE);
         }
-        
-        // logic...
+
+        // save result to DB
+        game.setIsWin(false);
+        DbGames.saveNewEntryInDb(game, con);
+
+        // block answer button
+        gameBoardPanel.setAnswerButtonEnabled(false);
+    }
+
+    private void win() {
+        // show dialog for user
+        JOptionPane.showMessageDialog(mw, Configuration.getResourceBundle().getString("gameModelWinMessage"),
+                Configuration.getResourceBundle().getString("title"),
+                JOptionPane.INFORMATION_MESSAGE);
+
+        // save result to DB
+        game.setIsWin(true);
+        DbGames.saveNewEntryInDb(game, con);
+
+        // block answer button
+        gameBoardPanel.setAnswerButtonEnabled(false);
     }
 
     public GameMode getGameMode() {
@@ -89,13 +121,13 @@ public class GameModel {
 
     private List<DbGeography> loadQuestionsFromDB() {
         Map<Integer, DbGeography> regionsFromDB = (region == Region.ALL)
-                ? DbGeography.getAllRows(con) 
+                ? DbGeography.getAllRows(con)
                 : DbGeography.getRowsByRegionFilter(con, region);
         List<DbGeography> questionList = new ArrayList<>(regionsFromDB.values());
         Collections.shuffle(questionList);
         return questionList;
     }
-    
+
     public DbGeography getNextQuestion() {
         return questions.get(questionId - 1);
     }
@@ -105,9 +137,62 @@ public class GameModel {
         if (hints == 0) {
             return null;
         }
-        
+
         hints--;
+        game.setKeysUsed(game.getKeysUsed() + 1);
         return getNextQuestion();
     }
-    
+
+    public void checkAnswer() {
+        gameBoardPanel.blockLetterButtons();
+        gameBoardPanel.setHintButtonEnabled(false);
+        gameBoardPanel.setAnswerButtonEnabled(false);
+
+        String usersAnswer = gameBoardPanel.getUsersAnswer();
+        boolean isAnswerRight = usersAnswer
+                .equalsIgnoreCase(getNextQuestion().getCountryLocalized());
+
+        if (!isAnswerRight) {
+            // case: wrong answer
+            gameBoardPanel.showHiddenHint(); // show right answer
+            
+            if (lives == 1) {
+                lose(true);
+                return;
+            } else {
+                lives--;
+                game.setMistakes(game.getMistakes() + 1);
+                gameBoardPanel.updateLivesNumberLabel(lives);
+            }
+        } else {
+            // case: right answer
+            game.setScore(game.getScore() + difficulty.getScoreRate());
+            
+            if (questionId.equals(questions.size() - 1)) {
+                win();
+                return;
+            }
+            
+            rightAnswers++;
+            if (rightAnswers.equals(difficulty.getHintRate())) {
+                rightAnswers = 0;
+                hints++;
+                gameBoardPanel.setHintsNumber(hints, false);
+            }
+        }
+        
+        // checkAchievements
+        LetterButtonState state = isAnswerRight 
+                ? LetterButtonState.OK 
+                : LetterButtonState.WRONG;
+        gameBoardPanel.setTextFieldsState(state);
+        
+        ResourceBundle rb = Configuration.getResourceBundle();
+        gameBoardPanel.setAnswerButtonText(rb.getString("answerButtonOptionNext"));
+    }
+
+    public void setNextQuestion() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

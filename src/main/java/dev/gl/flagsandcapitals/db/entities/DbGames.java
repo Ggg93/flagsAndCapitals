@@ -4,6 +4,7 @@ import dev.gl.flagsandcapitals.db.common.HyperConnection;
 import dev.gl.flagsandcapitals.enums.GameMode;
 import dev.gl.flagsandcapitals.enums.Region;
 import dev.gl.flagsandcapitals.utils.logging.Logging;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -18,6 +19,32 @@ import java.util.logging.Logger;
 public class DbGames {
 
     private static final Logger LOGGER = Logging.getLocalLogger(DbGames.class);
+
+    public static void saveNewEntryInDb(DbGames game, HyperConnection con) {
+        DbGameMode gameMode = DbGameMode.getRowByCode(con, game.getGameMode().getCode());
+        DbRegion region = DbRegion.getRowByCode(con, game.getRegion().getCode());
+                
+        String sql = """
+                     INSERT INTO games 
+                     (game_mode_id, region_id, is_win, score, mistakes, keys_used) 
+                     VALUES (?, ?, ?, ?, ?, ?)
+                     """;
+        
+        try (PreparedStatement pstmt = con.getCon().prepareStatement(sql)){
+            pstmt.setInt(1, gameMode.getId());
+            pstmt.setInt(2, region.getId());
+            pstmt.setBoolean(3, game.getIsWin());
+            pstmt.setInt(4, game.getScore());
+            pstmt.setInt(5, game.getMistakes());
+            pstmt.setInt(6, game.getKeysUsed());
+            
+            int insertedRows = pstmt.executeUpdate();
+            LOGGER.log(Level.FINE, "inserted rows: " + insertedRows);
+            
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+        }
+    }
 
     private Integer id;
     private GameMode gameMode;

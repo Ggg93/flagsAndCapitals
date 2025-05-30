@@ -3,6 +3,7 @@ package dev.gl.flagsandcapitals.db.entities;
 import dev.gl.flagsandcapitals.db.common.HyperConnection;
 import dev.gl.flagsandcapitals.enums.Region;
 import dev.gl.flagsandcapitals.utils.logging.Logging;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -15,8 +16,9 @@ import java.util.logging.Logger;
  * @author gl
  */
 public class DbRegion {
+
     private static final Logger LOGGER = Logging.getLocalLogger(DbRegion.class);
-    
+
     private int id;
     private Region region;
 
@@ -24,7 +26,29 @@ public class DbRegion {
         this.id = id;
         this.region = region;
     }
-    
+
+    public static DbRegion getRowByCode(HyperConnection con, Integer codeFilter) {
+        DbRegion ans = null;
+        String sql = "SELECT * FROM region WHERE code = ? LIMIT 1";
+        try (PreparedStatement pstmt = con.getCon().prepareStatement(sql)) {
+            pstmt.setInt(1, codeFilter);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Integer id = rs.getInt(1);
+                Integer code = rs.getInt(2);
+                DbRegion entry = new DbRegion(id,
+                        Region.getRegionByCode(code));
+                ans = entry;
+                break;
+            }
+
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+        }
+
+        return ans;
+    }
+
     public static Map<Integer, DbRegion> getAllRows(HyperConnection con) {
         if (con == null) {
             return null;
@@ -66,7 +90,5 @@ public class DbRegion {
     public void setRegion(Region region) {
         this.region = region;
     }
-    
-    
-    
+
 }
