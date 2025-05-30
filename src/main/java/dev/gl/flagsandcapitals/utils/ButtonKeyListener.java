@@ -6,23 +6,12 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 
 /**
  *
  * @author gl
  */
 public class ButtonKeyListener extends KeyAdapter {
-
-    private static final Integer DELAY_MS = 500;
-    private final GameBoardPanel gameBoardPanel;
-    private final List<JTextField> textFields;
-    private JTextField nextFieldToBeFocused;
-
-    public ButtonKeyListener(GameBoardPanel gameBoardPanel, List<JTextField> textFields) {
-        this.gameBoardPanel = gameBoardPanel;
-        this.textFields = textFields;
-    }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -34,27 +23,6 @@ public class ButtonKeyListener extends KeyAdapter {
                 || e.getKeyCode() == KeyEvent.VK_F11) {
             return;
         }
-
-        if (nextFieldToBeFocused != null) {
-            final JTextField nextField = nextFieldToBeFocused;
-            SwingUtilities.invokeLater(() -> nextField.requestFocusInWindow());
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-//         if all letters are filled, enabling answer button; disable otherwise
-        SwingUtilities.invokeLater(() -> {
-            boolean allLettersFilled = textFields.stream().allMatch(textField -> {
-                String text = textField.getText();
-                return text != null && !text.isEmpty();
-            });
-            gameBoardPanel.setAnswerButtonEnabled(allLettersFilled);
-        });
-    }
-
-    public void setNextFieldToBeFocused(JTextField nextFieldToBeFocused) {
-        this.nextFieldToBeFocused = nextFieldToBeFocused;
     }
 
 }

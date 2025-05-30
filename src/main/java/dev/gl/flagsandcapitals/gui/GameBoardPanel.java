@@ -10,6 +10,7 @@ import dev.gl.flagsandcapitals.listeners.AnswerButtonActionListener;
 import dev.gl.flagsandcapitals.listeners.HiddenHintAbstractListener;
 import dev.gl.flagsandcapitals.listeners.HintButtonAbstractAction;
 import dev.gl.flagsandcapitals.models.GameModel;
+import dev.gl.flagsandcapitals.utils.ButtonDocumentListener;
 import dev.gl.flagsandcapitals.utils.ButtonFilter;
 import dev.gl.flagsandcapitals.utils.ButtonFocusListener;
 import dev.gl.flagsandcapitals.utils.ButtonKeyListener;
@@ -414,10 +415,11 @@ public class GameBoardPanel extends javax.swing.JPanel {
         // adding listeners to shift the focus
         for (int i = 0; i < textFields.size(); i++) {
             JTextField textField = textFields.get(i);
-            ButtonKeyListener buttonKeyListener = new ButtonKeyListener(this, textFields);
-            textField.addKeyListener(buttonKeyListener);
+            ButtonDocumentListener bdl = new ButtonDocumentListener(this, textFields);
+            textField.getDocument().addDocumentListener(bdl);
+            
             if (i < textFields.size() - 1) {
-                buttonKeyListener.setNextFieldToBeFocused(textFields.get(i + 1));
+                bdl.setNextFieldToBeFocused(textFields.get(i + 1));
             }
         }
         lettersPanel.revalidate();
