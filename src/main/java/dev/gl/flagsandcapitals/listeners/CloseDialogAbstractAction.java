@@ -1,13 +1,14 @@
 package dev.gl.flagsandcapitals.listeners;
 
+import dev.gl.flagsandcapitals.gui.MainWindow;
 import dev.gl.flagsandcapitals.gui.SettingsDialog;
 import dev.gl.flagsandcapitals.utils.Configuration;
+import dev.gl.flagsandcapitals.utils.EntryPoint;
 import dev.gl.flagsandcapitals.utils.logging.Logging;
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
@@ -41,6 +42,13 @@ public class CloseDialogAbstractAction extends AbstractAction {
                 if (choice != 0) {
                     return;
                 }
+            }
+
+            if (settingsDialog.getNeedRestart()) {
+                MainWindow mw = ((MainWindow) parent.getParent());
+                parent.dispose();
+                mw.dispose();
+                EntryPoint.main(null);
             }
         }
         logger.log(Level.FINE, parent.getName() + " closed by user");

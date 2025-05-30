@@ -30,7 +30,11 @@ public class SettingsDialogSaveButtonListener implements ActionListener {
         HyperConnection con = HyperConnection.getInstance();
         Map<String, DbSettings> settings = DbSettings.getAllSettings(con);
         
+        
         DbSettings language = settings.get("lang");
+        if (!parent.getSelectedLanguage().getIsoCode().equalsIgnoreCase(language.getValString())) {
+            parent.needRestart();
+        }
         language.setValString(parent.getSelectedLanguage().getIsoCode());
         
         DbSettings gameMode = settings.get("gameMode");

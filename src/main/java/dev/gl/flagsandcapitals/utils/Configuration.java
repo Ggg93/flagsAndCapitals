@@ -34,6 +34,12 @@ public class Configuration {
         DbSettings installedLanguage = allSettings.get("lang");
         lang = Language.getLanguageByIsoCode(installedLanguage.getValString());
         
+        if (lang.equals(Language.EN)) {
+            resourceBundle = ResourceBundle.getBundle("dict", Locale.ENGLISH);
+        } else if (lang.equals(Language.RU)) {
+            resourceBundle = ResourceBundle.getBundle("dict", new Locale.Builder().setLanguageTag("ru").build());
+        }
+        
         DbSettings installedGameMode = allSettings.get("gameMode");
         gameMode = GameMode.getGameModeByName(installedGameMode.getValString());
         

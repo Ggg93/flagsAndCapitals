@@ -23,10 +23,13 @@ import javax.swing.KeyStroke;
 public class SettingsDialog extends javax.swing.JDialog {
     
     private Logger logger;
+    private MainWindow parent;
     private CloseDialogAbstractAction closeButtonListener;
+    private Boolean needRestart = false;
 
     public SettingsDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.parent = (MainWindow) parent;
         initComponents();
         setName(this.getClass().getSimpleName());
         setSaveButtonEnabled(false);
@@ -199,4 +202,17 @@ public class SettingsDialog extends javax.swing.JDialog {
         ImageIcon icon = new ImageIcon(this.getClass().getClassLoader().getResource("images/icons8-map-40.png"));
         this.setIconImage(icon.getImage());
     }
+
+    public void needRestart() {
+        needRestart = true;
+    }
+
+    public Boolean getNeedRestart() {
+        return needRestart;
+    }
+
+    public MainWindow getParent() {
+        return parent;
+    }
+    
 }
