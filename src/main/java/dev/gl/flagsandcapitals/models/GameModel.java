@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
  */
 public class GameModel {
 
-    private static final ResourceBundle RB = Configuration.getResourceBundle();
+    private ResourceBundle RB = Configuration.getResourceBundle();
     private HyperConnection con;
     private MainWindow mw;
     private GameBoardPanel gameBoardPanel;
