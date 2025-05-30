@@ -15,7 +15,10 @@ public class ButtonKeyListener extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent e) {
         // prevents unwanted displacement
-        if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE || e.getKeyCode() == KeyEvent.VK_SHIFT) {
+        if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE 
+                || e.getKeyCode() == KeyEvent.VK_SHIFT
+                || e.getKeyCode() == KeyEvent.VK_ENTER
+                || e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             return;
         }
         

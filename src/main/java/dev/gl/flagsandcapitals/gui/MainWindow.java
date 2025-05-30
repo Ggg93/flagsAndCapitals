@@ -162,5 +162,9 @@ public class MainWindow extends javax.swing.JFrame {
     public MainWindowMode getMainWindowMode() {
         return mainWindowMode;
     }
+
+    public GameBoardPanel getGameBoardPanel() {
+        return gameBoardPanel;
+    }
     
 }

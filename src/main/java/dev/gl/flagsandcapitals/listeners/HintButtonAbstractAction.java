@@ -17,14 +17,21 @@ public class HintButtonAbstractAction extends AbstractAction {
     
     private static final Logger LOGGER = Logging.getLocalLogger(HintButtonAbstractAction.class);
     private final GameBoardPanel gameBoardPanel;
-    private GameModel gameModel;
+    private final GameModel gameModel;
 
-    public HintButtonAbstractAction(GameBoardPanel gameBoardPanel) {
+    public HintButtonAbstractAction(GameBoardPanel gameBoardPanel, GameModel gameModel) {
         this.gameBoardPanel = gameBoardPanel;
+        this.gameModel = gameModel;
     }
+
     
     @Override
     public void actionPerformed(ActionEvent e) {
+        
+        if (!gameBoardPanel.getHintButton().isEnabled()) {
+            return;
+        }
+        
         DbGeography answer = gameModel.useHint();
         if (answer == null) {
             LOGGER.log(Level.FINE, "Player has no hints at the moment");
@@ -35,8 +42,4 @@ public class HintButtonAbstractAction extends AbstractAction {
         gameBoardPanel.setHintsNumber(gameModel.getHints());
     }
 
-    public void setGameModel(GameModel gameModel) {
-        this.gameModel = gameModel;
-    }
-    
 }

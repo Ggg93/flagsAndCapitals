@@ -4,6 +4,7 @@ import dev.gl.flagsandcapitals.db.entities.DbGeography;
 import static dev.gl.flagsandcapitals.enums.GameMode.CAPITALS;
 import static dev.gl.flagsandcapitals.enums.GameMode.FLAGS;
 import static dev.gl.flagsandcapitals.enums.Language.EN;
+import dev.gl.flagsandcapitals.listeners.AnswerButtonActionListener;
 import dev.gl.flagsandcapitals.listeners.HintButtonAbstractAction;
 import dev.gl.flagsandcapitals.models.GameModel;
 import dev.gl.flagsandcapitals.utils.ButtonFilter;
@@ -20,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
@@ -51,6 +51,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
     private JButton hintButton;
     private List<JTextField> textFields;
     private HintButtonAbstractAction hintButtonListener;
+    private AnswerButtonActionListener answerButtonListener;
 
     public GameBoardPanel() {
         initComponents();
@@ -60,8 +61,8 @@ public class GameBoardPanel extends javax.swing.JPanel {
         this.gameModel = gameModel;
         initData();
         
-        hintButtonListener = new HintButtonAbstractAction(this);
-        hintButtonListener.setGameModel(gameModel);
+        hintButtonListener = new HintButtonAbstractAction(this, gameModel);
+        answerButtonListener = new AnswerButtonActionListener(this, gameModel);
         bindActionsToButtons();
         createKeyBindings();
     }
@@ -270,7 +271,11 @@ public class GameBoardPanel extends javax.swing.JPanel {
     public void setHintsNumber(Integer hints) {
         hintNumberLabel.setText(hints.toString());
         hintButton.setEnabled(hints > 0);
-        PopupWindow.showPopupWindow(hintButton, "-1 hint!", 1000, 1500);
+        String message = "-1 " 
+                + Configuration.getResourceBundle().getString("hintButton")
+                + "!";
+        PopupWindow.showPopupWindow(hintButton, message, 1000, 1500);
+        hintButton.setEnabled(false);
     }
 
     public void setAnswer(DbGeography answer) {
@@ -284,9 +289,14 @@ public class GameBoardPanel extends javax.swing.JPanel {
     public JButton getHintButton() {
         return hintButton;
     }
+
+    public JButton getAnswerButton() {
+        return answerButton;
+    }
     
     private void bindActionsToButtons() {
         hintButton.addActionListener(hintButtonListener);
+        answerButton.addActionListener(answerButtonListener);
     }
     
     private void createKeyBindings() {
