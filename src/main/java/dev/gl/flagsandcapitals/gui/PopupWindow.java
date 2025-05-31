@@ -24,6 +24,8 @@ public class PopupWindow {
 
     public static void showPopupWindow(Component parent,
             String message,
+            int width,
+            int height,
             int pxlsDown,
             int fadeDurationMs,
             int visibleDurationMs) {
