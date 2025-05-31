@@ -18,8 +18,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +43,10 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.text.AbstractDocument;
 import org.apache.batik.swing.JSVGCanvas;
+import org.apache.batik.swing.svg.SVGDocumentLoaderAdapter;
+import org.apache.batik.swing.svg.SVGDocumentLoaderEvent;
+import org.w3c.dom.Element;
+import org.w3c.dom.svg.SVGDocument;
 
 /**
  *
@@ -370,9 +378,21 @@ public class GameBoardPanel extends javax.swing.JPanel {
 
                     JSVGCanvas svg = new JSVGCanvas();
                     svg.setBackground(new Color(0, 0, 0, 0));
-//                    svg.setDocumentState(JSVGCanvas.ALWAYS_DYNAMIC);
+                    svg.setDocumentState(JSVGCanvas.ALWAYS_DYNAMIC);
+
                     svg.setURI(uri);
-                    flagOrCapitalPanel.add(svg);
+
+                    GridBagConstraints gbc = new GridBagConstraints();
+                    gbc.gridx = 0;
+                    gbc.gridy = 0;
+                    gbc.weightx = 0.8;
+                    gbc.weighty = 0.8;
+                    gbc.fill = GridBagConstraints.BOTH;
+
+                    flagOrCapitalPanel.add(svg, gbc);
+
+                    svg.revalidate();
+                    svg.repaint();
                 } catch (Exception e) {
                     LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
                 }
@@ -435,5 +455,5 @@ public class GameBoardPanel extends javax.swing.JPanel {
     public MainWindow getMainWindow() {
         return mainWindow;
     }
-    
+
 }
