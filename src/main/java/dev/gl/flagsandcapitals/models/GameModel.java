@@ -204,7 +204,7 @@ public class GameModel {
     public void setNextQuestion() {
         questionId++;
         gameBoardPanel.updateStepValue();
-        gameBoardPanel.setHintButtonEnabled(true);
+        gameBoardPanel.setHintButtonEnabled(hints > 0);
         gameBoardPanel.setAnswerButtonText(RB.getString("answerButtonOptionAnswer"));
         gameBoardPanel.setAnswerButtonEnabled(false);
         gameBoardPanel.updateFlagOrCapitalPanel();
