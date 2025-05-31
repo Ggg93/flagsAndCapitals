@@ -243,15 +243,16 @@ public class GameBoardPanel extends javax.swing.JPanel {
         String message = (subtracting ? "-1 " : "+1 ")
                 + Configuration.getResourceBundle().getString("hintButton")
                 + "!";
-        showPopup(hintButton, message, 1000, 1500);
+        showPopup(hintNumberLabel, message, 5, 1000, 1500);
         setHintButtonEnabled(false);
     }
 
     public void showPopup(Component parent,
             String message,
+            int pxlsUp,
             int fadeDurationMs,
             int visibleDurationMs) {
-        PopupWindow.showPopupWindow(parent, message, fadeDurationMs, visibleDurationMs);
+        PopupWindow.showPopupWindow(parent, message, pxlsUp, fadeDurationMs, visibleDurationMs);
     }
 
     public void setAnswer(DbGeography answer) {
@@ -305,7 +306,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
         String message = "-1 "
                 + Configuration.getResourceBundle().getString("liveLabel")
                 + "!";
-        showPopup(livesNumberLabel, message, 1000, 1500);
+        showPopup(livesNumberLabel, message, 5, 1000, 1500);
     }
 
     private void bindActionsToButtons() {
@@ -355,12 +356,12 @@ public class GameBoardPanel extends javax.swing.JPanel {
 
     public void showHiddenHint() {
         String message = gameModel.getNextQuestion().getCountryLocalized();
-        showPopup(answerButton, message, 500, 1000);
+        showPopup(answerButton, message, 2, 500, 1000);
     }
 
     public void showAnswerNotReadyMessage() {
         String message = Configuration.getResourceBundle().getString("answerNotPreparedMessage");
-        showPopup(answerButton, message, 500, 1000);
+        showPopup(answerButton, message, 2, 500, 1000);
     }
 
     public boolean areAllLettersFilled() {

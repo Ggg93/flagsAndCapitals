@@ -18,24 +18,28 @@ import javax.swing.Timer;
  * @author gl
  */
 public class PopupWindow {
-    private static int width = 200;
-    private static int height = 50;
+
+    private static int width = 120;
+    private static int height = 30;
 
     public static void showPopupWindow(Component parent,
             String message,
+            int pxlsDown,
             int fadeDurationMs,
             int visibleDurationMs) {
         JWindow popup = new JWindow(SwingUtilities.getWindowAncestor(parent));
         JLabel label = new JLabel(message, SwingConstants.CENTER);
         label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        label.setFont(new Font("Arial", Font.BOLD, 18));
+        label.setFont(new Font("Arial", Font.BOLD, 14));
         popup.getContentPane().add(label);
         popup.setSize(width, height);
 
         // place window below the parent component
         Point parentLocation = parent.getLocationOnScreen();
         int x = parentLocation.x + (parent.getWidth() / 2) - (width / 2); // centered by the parent component's middle
-        int y = parentLocation.y + parent.getHeight() + 5; // 5 pixels lower than the parent component
+        int y = pxlsDown >= 0
+                ? parentLocation.y + parent.getHeight() + pxlsDown // 5 pixels lower than the parent component
+                : parentLocation.y + pxlsDown;
         popup.setLocation(x, y);
 
         // preparing before show the popup window
