@@ -119,6 +119,15 @@ public class StatisticsDialog extends javax.swing.JDialog {
                 .filter(game -> game.getIsWin())
                 .count();
         Integer defeats = ttlGames - wins;
+        Integer ttlFlags = games.values().stream()
+                .mapToInt(game -> game.getGuessedFlags())
+                .sum();
+        Integer ttlCapitals = games.values().stream()
+                .mapToInt(game -> game.getGuessedCapitals())
+                .sum();
+        Integer ttlScore = games.values().stream()
+                .mapToInt(game -> game.getScore())
+                .sum();
         
         // calculate achievements
         Map<Integer, DbAchievements> achievementsMap = DbAchievements.getAllRows(con);
@@ -131,6 +140,9 @@ public class StatisticsDialog extends javax.swing.JDialog {
             {Configuration.getResourceBundle().getString("statsTtlGames"), ttlGames},
             {Configuration.getResourceBundle().getString("statsWins"), wins},
             {Configuration.getResourceBundle().getString("statsDefeats"), defeats},
+            {Configuration.getResourceBundle().getString("statsScore"), ttlScore},
+            {Configuration.getResourceBundle().getString("statsFlags"), ttlFlags},
+            {Configuration.getResourceBundle().getString("statsCapitals"), ttlCapitals},
             {Configuration.getResourceBundle().getString("statsAchievements"), achievementsStats}
         };
         return stats;
