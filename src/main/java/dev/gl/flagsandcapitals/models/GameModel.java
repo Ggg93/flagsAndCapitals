@@ -77,6 +77,7 @@ public class GameModel {
 
         // block answer button
         gameBoardPanel.setAnswerButtonEnabled(false);
+        gameBoardPanel.getMainWindow().setMainMenuButtonFocused();
     }
 
     private void win() {
@@ -92,6 +93,7 @@ public class GameModel {
 
         // block answer button
         gameBoardPanel.setAnswerButtonEnabled(false);
+        gameBoardPanel.getMainWindow().setMainMenuButtonFocused();
     }
 
     public GameMode getGameMode() {

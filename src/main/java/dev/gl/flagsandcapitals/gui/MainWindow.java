@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -20,7 +21,7 @@ public class MainWindow extends javax.swing.JFrame {
     private MainWindowMode mainWindowMode;
     private MainWindowListenersKeeper listenersKeeper;
     private MainMenuPanel mainMenuPanel = new MainMenuPanel();
-    private GameBoardPanel gameBoardPanel = new GameBoardPanel();
+    private GameBoardPanel gameBoardPanel = new GameBoardPanel(this);
     private GameModel gameModel;
 
     public MainWindow() {
@@ -103,7 +104,7 @@ public class MainWindow extends javax.swing.JFrame {
         mainPanel.removeAll();
 
         if (mode == MainWindowMode.PLAYING) {
-            gameBoardPanel = new GameBoardPanel();
+            gameBoardPanel = new GameBoardPanel(this);
             gameBoardPanel.setGameModel(gameModel);
             gameModel.setGameBoardPanel(gameBoardPanel);
             mainPanel.add(gameBoardPanel);
@@ -174,6 +175,10 @@ public class MainWindow extends javax.swing.JFrame {
         } 
         
         return true;
+    }
+    
+    public void setMainMenuButtonFocused() {
+        SwingUtilities.invokeLater(() -> mainMenuButton.requestFocusInWindow());
     }
     
 }

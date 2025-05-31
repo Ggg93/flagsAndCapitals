@@ -51,6 +51,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
     private static final Font QUESTION_FONT = new Font("SansSerif", Font.PLAIN, 24);
     private static final Font CAPITAL_FONT = new Font("SansSerif", Font.PLAIN, 32);
     private static final ButtonFilter BUTTON_FILTER = new ButtonFilter();
+    private MainWindow mainWindow;
     private ImageIcon heartIcon = new ImageIcon(this.getClass().getClassLoader().getResource("images/icons8-heart-20.png"));
     private ImageIcon keyIcon = new ImageIcon(this.getClass().getClassLoader().getResource("images/icons8-key-20.png"));
     private GameModel gameModel;
@@ -63,7 +64,8 @@ public class GameBoardPanel extends javax.swing.JPanel {
     private HiddenHintAbstractListener hiddenHintListener;
     private static Border regularTextFieldBorder;
 
-    public GameBoardPanel() {
+    public GameBoardPanel(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
         initComponents();
     }
 
@@ -417,7 +419,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
             JTextField textField = textFields.get(i);
             ButtonDocumentListener bdl = new ButtonDocumentListener(this, textFields);
             textField.getDocument().addDocumentListener(bdl);
-            
+
             if (i < textFields.size() - 1) {
                 bdl.setNextFieldToBeFocused(textFields.get(i + 1));
             }
@@ -428,6 +430,10 @@ public class GameBoardPanel extends javax.swing.JPanel {
 
     public GameModel getGameModel() {
         return gameModel;
+    }
+
+    public MainWindow getMainWindow() {
+        return mainWindow;
     }
     
 }
