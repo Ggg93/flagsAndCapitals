@@ -1,6 +1,7 @@
 package dev.gl.flagsandcapitals.gui;
 
 import dev.gl.flagsandcapitals.db.entities.DbGeography;
+import dev.gl.flagsandcapitals.enums.GameMode;
 import static dev.gl.flagsandcapitals.enums.GameMode.CAPITALS;
 import static dev.gl.flagsandcapitals.enums.GameMode.FLAGS;
 import dev.gl.flagsandcapitals.enums.LetterButtonState;
@@ -23,7 +24,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.geom.AffineTransform;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,10 +43,6 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.text.AbstractDocument;
 import org.apache.batik.swing.JSVGCanvas;
-import org.apache.batik.swing.svg.SVGDocumentLoaderAdapter;
-import org.apache.batik.swing.svg.SVGDocumentLoaderEvent;
-import org.w3c.dom.Element;
-import org.w3c.dom.svg.SVGDocument;
 
 /**
  *
@@ -57,7 +53,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
     private static final Logger LOGGER = Logging.getLocalLogger(GameBoardPanel.class);
     private static final Font BUTTON_FONT = new Font("SansSerif", Font.PLAIN, 18);
     private static final Font QUESTION_FONT = new Font("SansSerif", Font.PLAIN, 24);
-    private static final Font CAPITAL_FONT = new Font("SansSerif", Font.PLAIN, 32);
+    private static Font CAPITAL_FONT = new Font("SansSerif", Font.PLAIN, 32);
     private static final ButtonFilter BUTTON_FILTER = new ButtonFilter();
     private MainWindow mainWindow;
     private ImageIcon heartIcon = new ImageIcon(this.getClass().getClassLoader().getResource("images/icons8-heart-20.png"));
@@ -71,6 +67,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
     private AnswerButtonActionListener answerButtonListener;
     private HiddenHintAbstractListener hiddenHintListener;
     private static Border regularTextFieldBorder;
+    private JLabel capitalLabel;
 
     public GameBoardPanel(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
@@ -218,6 +215,21 @@ public class GameBoardPanel extends javax.swing.JPanel {
         }
         questionLabel.setText(questionLabelText);
         questionLabel.setFont(QUESTION_FONT);
+
+        flagOrCapitalPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                int panelHeight = flagOrCapitalPanel.getHeight();
+                int newFontSize = Math.max(12, panelHeight / 3);
+                CAPITAL_FONT = CAPITAL_FONT.deriveFont((float) newFontSize);
+
+                if (gameModel.getGameMode() == GameMode.CAPITALS) {
+                    capitalLabel.setFont(CAPITAL_FONT);
+                    flagOrCapitalPanel.revalidate();
+                    flagOrCapitalPanel.repaint();
+                }
+            }
+        });
 
         // flagOrCapitalPanel
         updateFlagOrCapitalPanel();
@@ -400,7 +412,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
                 break;
             case CAPITALS:
                 String capital = gameModel.getNextQuestion().getCapitalLocalized();
-                JLabel capitalLabel = new JLabel(capital);
+                capitalLabel = new JLabel(capital);
                 capitalLabel.setFont(CAPITAL_FONT);
                 flagOrCapitalPanel.add(capitalLabel);
                 break;
