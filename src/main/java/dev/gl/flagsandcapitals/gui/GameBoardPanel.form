@@ -60,6 +60,18 @@
                 <Property name="text" type="java.lang.String" value="jLabel1"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JLabel" name="scoreLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="dict.properties" key="scoreLabel" replaceFormat="Configuration.getResourceBundle().getString(&quot;{key}&quot;)"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="scoreValueLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel1"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="rightInfoPanel">

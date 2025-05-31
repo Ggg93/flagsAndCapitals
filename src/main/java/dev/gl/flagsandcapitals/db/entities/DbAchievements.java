@@ -2,7 +2,6 @@ package dev.gl.flagsandcapitals.db.entities;
 
 import dev.gl.flagsandcapitals.db.common.HyperConnection;
 import dev.gl.flagsandcapitals.enums.Achievement;
-import dev.gl.flagsandcapitals.enums.GameMode;
 import dev.gl.flagsandcapitals.utils.DateUtils;
 import dev.gl.flagsandcapitals.utils.logging.Logging;
 import java.sql.ResultSet;

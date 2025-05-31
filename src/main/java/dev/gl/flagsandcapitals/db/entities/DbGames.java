@@ -3,10 +3,12 @@ package dev.gl.flagsandcapitals.db.entities;
 import dev.gl.flagsandcapitals.db.common.HyperConnection;
 import dev.gl.flagsandcapitals.enums.GameMode;
 import dev.gl.flagsandcapitals.enums.Region;
+import dev.gl.flagsandcapitals.utils.DateUtils;
 import dev.gl.flagsandcapitals.utils.logging.Logging;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -23,24 +25,27 @@ public class DbGames {
     public static void saveNewEntryInDb(DbGames game, HyperConnection con) {
         DbGameMode gameMode = DbGameMode.getRowByCode(con, game.getGameMode().getCode());
         DbRegion region = DbRegion.getRowByCode(con, game.getRegion().getCode());
-                
+
         String sql = """
                      INSERT INTO games 
-                     (game_mode_id, region_id, is_win, score, mistakes, keys_used) 
-                     VALUES (?, ?, ?, ?, ?, ?)
+                     (game_mode_id, region_id, is_win, score, mistakes, keys_used, date, guessed_flags, guessed_capitals) 
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                      """;
-        
-        try (PreparedStatement pstmt = con.getCon().prepareStatement(sql)){
+
+        try (PreparedStatement pstmt = con.getCon().prepareStatement(sql)) {
             pstmt.setInt(1, gameMode.getId());
             pstmt.setInt(2, region.getId());
             pstmt.setBoolean(3, game.getIsWin());
             pstmt.setInt(4, game.getScore());
             pstmt.setInt(5, game.getMistakes());
             pstmt.setInt(6, game.getKeysUsed());
-            
+            pstmt.setDate(7, DateUtils.converLocalDateToDate(game.getDate()));
+            pstmt.setInt(8, game.getGuessedFlags());
+            pstmt.setInt(9, game.getGuessedCapitals());
+
             int insertedRows = pstmt.executeUpdate();
             LOGGER.log(Level.FINE, "inserted rows: " + insertedRows);
-            
+
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
@@ -53,9 +58,13 @@ public class DbGames {
     private Integer score;
     private Integer mistakes;
     private Integer keysUsed;
+    private LocalDate date;
+    private Integer guessedFlags;
+    private Integer guessedCapitals;
 
-    public DbGames(Integer id, GameMode gameMode, Region region,
-            Boolean isWin, Integer score, Integer mistakes, Integer keysUsed) {
+    public DbGames(Integer id, GameMode gameMode, Region region, Boolean isWin,
+            Integer score, Integer mistakes, Integer keysUsed, LocalDate date,
+            Integer guessedFlags, Integer guessedCapitals) {
         this.id = id;
         this.gameMode = gameMode;
         this.region = region;
@@ -63,6 +72,9 @@ public class DbGames {
         this.score = score;
         this.mistakes = mistakes;
         this.keysUsed = keysUsed;
+        this.date = date;
+        this.guessedFlags = guessedFlags;
+        this.guessedCapitals = guessedCapitals;
     }
 
     public static Map<Integer, DbGames> getAllRows(HyperConnection con) {
@@ -87,15 +99,21 @@ public class DbGames {
                 Integer scores = rs.getInt(5);
                 Integer mistakes = rs.getInt(6);
                 Integer keysUsed = rs.getInt(7);
-                Integer modeCode = rs.getInt(8);
-                Integer regionCode = rs.getInt(9);
+                LocalDate date = DateUtils.convertDateToLocalDate(rs.getDate(8));
+                Integer guessedFlags = rs.getInt(9);
+                Integer guessedCapitals = rs.getInt(10);
+                Integer modeCode = rs.getInt(11);
+                Integer regionCode = rs.getInt(12);
                 DbGames entry = new DbGames(id,
                         GameMode.getGameModeByCode(modeCode),
                         Region.getRegionByCode(regionCode),
                         isWin,
                         scores,
-                         mistakes,
-                        keysUsed);
+                        mistakes,
+                        keysUsed,
+                        date,
+                        guessedFlags,
+                        guessedCapitals);
 
                 rowsById.put(id, entry);
             }
@@ -138,7 +156,7 @@ public class DbGames {
     public void setIsWin(Boolean isWin) {
         this.isWin = isWin;
     }
-    
+
     public Integer getScore() {
         return score;
     }
@@ -163,4 +181,28 @@ public class DbGames {
         this.keysUsed = keysUsed;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public Integer getGuessedFlags() {
+        return guessedFlags;
+    }
+
+    public void setGuessedFlags(Integer guessedFlags) {
+        this.guessedFlags = guessedFlags;
+    }
+
+    public Integer getGuessedCapitals() {
+        return guessedCapitals;
+    }
+
+    public void setGuessedCapitals(Integer guessedCapitals) {
+        this.guessedCapitals = guessedCapitals;
+    }
+    
 }

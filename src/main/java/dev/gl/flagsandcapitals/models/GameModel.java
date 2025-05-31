@@ -10,6 +10,7 @@ import dev.gl.flagsandcapitals.enums.Region;
 import dev.gl.flagsandcapitals.gui.GameBoardPanel;
 import dev.gl.flagsandcapitals.gui.MainWindow;
 import dev.gl.flagsandcapitals.utils.Configuration;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,6 +38,8 @@ public class GameModel {
     private Integer rightAnswers;
     private List<DbGeography> questions;
     private Boolean isGameFinished = false;
+    private Integer guessedFlags;
+    private Integer guessedCapitals;
 
     public GameModel(MainWindow mw, Region region) {
         this.mw = mw;
@@ -48,9 +51,20 @@ public class GameModel {
         lives = difficulty.getLives();
         hints = difficulty.getInitialAvailableHints();
         rightAnswers = 0;
+        guessedFlags = 0;
+        guessedCapitals = 0;
         questions = loadQuestionsFromDB();
 
-        game = new DbGames(null, gameMode, this.region, false, 0, 0, 0);
+        game = new DbGames(null,
+                gameMode,
+                this.region,
+                false,
+                0,
+                0,
+                0,
+                null,
+                guessedFlags,
+                guessedCapitals);
     }
 
     public void setGameBoardPanel(GameBoardPanel gameBoardPanel) {
@@ -72,6 +86,7 @@ public class GameModel {
 
         // save result to DB
         game.setIsWin(false);
+        game.setDate(LocalDate.now());
         isGameFinished = true;
         DbGames.saveNewEntryInDb(game, con);
 
@@ -88,6 +103,7 @@ public class GameModel {
 
         // save result to DB
         game.setIsWin(true);
+        game.setDate(LocalDate.now());
         isGameFinished = true;
         DbGames.saveNewEntryInDb(game, con);
 
@@ -163,26 +179,32 @@ public class GameModel {
             gameBoardPanel.updateLivesNumberLabel(lives);
             // case: wrong answer
             gameBoardPanel.showHiddenHint(); // show right answer
-            
+
             if (lives == 0) {
                 lose(true);
                 return;
             }
-            
+
             if (questionId.equals(questions.size() - 1)) {
                 win();
                 return;
             }
-            
+
         } else {
             // case: right answer
             game.setScore(game.getScore() + difficulty.getScoreRate());
             
+            if (gameMode == GameMode.FLAGS) {
+                game.setGuessedFlags(game.getGuessedFlags() + 1);
+            } else if (gameMode == GameMode.CAPITALS) {
+                game.setGuessedCapitals(game.getGuessedCapitals() + 1);
+            }
+
             if (questionId.equals(questions.size() - 1)) {
                 win();
                 return;
             }
-            
+
             rightAnswers++;
             if (rightAnswers.equals(difficulty.getHintRate())) {
                 rightAnswers = 0;
@@ -190,12 +212,12 @@ public class GameModel {
                 gameBoardPanel.setHintsNumber(hints, false);
             }
         }
-        
+
         // checkAchievements
-        LetterButtonState state = isAnswerRight 
-                ? LetterButtonState.OK 
+        LetterButtonState state = isAnswerRight
+                ? LetterButtonState.OK
                 : LetterButtonState.WRONG;
-        
+
         gameBoardPanel.setAnswerButtonText(RB.getString("answerButtonOptionNext"));
         gameBoardPanel.setTextFieldsState(state);
         gameBoardPanel.setAnswerButtonEnabled(true);
@@ -204,6 +226,7 @@ public class GameModel {
     public void setNextQuestion() {
         questionId++;
         gameBoardPanel.updateStepValue();
+        gameBoardPanel.updateScoreValue();
         gameBoardPanel.setHintButtonEnabled(hints > 0);
         gameBoardPanel.setAnswerButtonText(RB.getString("answerButtonOptionAnswer"));
         gameBoardPanel.setAnswerButtonEnabled(false);
@@ -214,5 +237,9 @@ public class GameModel {
     public Boolean getIsGameFinished() {
         return isGameFinished;
     }
-    
+
+    public String getScore() {
+        return game.getScore().toString();
+    }
+
 }

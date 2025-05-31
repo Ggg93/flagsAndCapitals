@@ -143,6 +143,9 @@ public class HyperConnection {
                             score INT,
                             mistakes INT,
                             keys_used INT,
+                            date DATE,
+                            guessed_flags INT,
+                            guessed_capitals INT,
                        
                             FOREIGN KEY (game_mode_id) REFERENCES game_mode(id) ON DELETE RESTRICT,
                             FOREIGN KEY (region_id) REFERENCES region(id) ON DELETE RESTRICT
@@ -182,11 +185,6 @@ public class HyperConnection {
             LOGGER.config("Insert first " + affectedRows.length + " rows in the \"achievements\" table");
         }
 
-//        LocalDate ld = LocalDate.now();
-//        PreparedStatement stmt2 = con.prepareStatement("UPDATE ACHIEVEMENTS SET achieved_date = ? WHERE code = ?");
-//        stmt2.setDate(1, java.sql.Date.valueOf(ld));
-//        stmt2.setInt(2, 1);
-//        stmt2.executeUpdate();
     }
 
     private void createSettingsTable() throws SQLException {

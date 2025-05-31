@@ -2,7 +2,6 @@ package dev.gl.flagsandcapitals.utils;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.ZoneId;
 
 /**
  *
@@ -16,5 +15,13 @@ public class DateUtils {
         }
 
         return date.toLocalDate();
+    }
+    
+    public static Date converLocalDateToDate(LocalDate localDate) {
+        if (localDate == null) {
+            return null;
+        }
+        
+        return Date.valueOf(localDate);
     }
 }

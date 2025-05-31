@@ -95,6 +95,8 @@ public class GameBoardPanel extends javax.swing.JPanel {
         regionValueLabel = new javax.swing.JLabel();
         stepLabel = new javax.swing.JLabel();
         stepValueLabel = new javax.swing.JLabel();
+        scoreLabel = new javax.swing.JLabel();
+        scoreValueLabel = new javax.swing.JLabel();
         rightInfoPanel = new javax.swing.JPanel();
         mainPanel = new javax.swing.JPanel();
         questionPanel = new javax.swing.JPanel();
@@ -123,6 +125,12 @@ public class GameBoardPanel extends javax.swing.JPanel {
 
         stepValueLabel.setText("jLabel1");
         leftInfoPanel.add(stepValueLabel);
+
+        scoreLabel.setText(Configuration.getResourceBundle().getString("scoreLabel")); // NOI18N
+        leftInfoPanel.add(scoreLabel);
+
+        scoreValueLabel.setText("jLabel1");
+        leftInfoPanel.add(scoreValueLabel);
 
         infoPanel.add(leftInfoPanel, java.awt.BorderLayout.CENTER);
 
@@ -175,6 +183,8 @@ public class GameBoardPanel extends javax.swing.JPanel {
     private javax.swing.JLabel regionLabel;
     private javax.swing.JLabel regionValueLabel;
     private javax.swing.JPanel rightInfoPanel;
+    private javax.swing.JLabel scoreLabel;
+    private javax.swing.JLabel scoreValueLabel;
     private javax.swing.JLabel stepLabel;
     private javax.swing.JLabel stepValueLabel;
     // End of variables declaration//GEN-END:variables
@@ -182,6 +192,7 @@ public class GameBoardPanel extends javax.swing.JPanel {
     private void initData() {
         regionValueLabel.setText(gameModel.getRegion().toString());
         updateStepValue();
+        updateScoreValue();
 
         // rightInfoPanel
         // lives
@@ -377,6 +388,10 @@ public class GameBoardPanel extends javax.swing.JPanel {
 
     public void updateStepValue() {
         stepValueLabel.setText(gameModel.getStepInfo());
+    }
+    
+    public void updateScoreValue() {
+        scoreValueLabel.setText(gameModel.getScore());
     }
 
     public void updateFlagOrCapitalPanel() {
