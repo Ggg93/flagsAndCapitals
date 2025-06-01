@@ -86,6 +86,34 @@ public enum Achievement {
         return name;
     }
 
+    public GameMode getGameMode() {
+        return gameMode;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public Integer getGames() {
+        return games;
+    }
+
+    public Integer getWins() {
+        return wins;
+    }
+
+    public Integer getFlags() {
+        return flags;
+    }
+
+    public Integer getCapitals() {
+        return capitals;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+    
     @Override
     public String toString() {
         return Configuration.getResourceBundle().getString(localizedName);

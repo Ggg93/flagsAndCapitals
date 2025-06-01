@@ -1,6 +1,7 @@
 package dev.gl.flagsandcapitals.gui;
 
 import dev.gl.flagsandcapitals.db.entities.DbGeography;
+import dev.gl.flagsandcapitals.enums.Achievement;
 import dev.gl.flagsandcapitals.enums.GameMode;
 import static dev.gl.flagsandcapitals.enums.GameMode.CAPITALS;
 import static dev.gl.flagsandcapitals.enums.GameMode.FLAGS;
@@ -10,6 +11,7 @@ import dev.gl.flagsandcapitals.listeners.AnswerButtonActionListener;
 import dev.gl.flagsandcapitals.listeners.HiddenHintAbstractListener;
 import dev.gl.flagsandcapitals.listeners.HintButtonAbstractAction;
 import dev.gl.flagsandcapitals.models.GameModel;
+import dev.gl.flagsandcapitals.models.PopupManager;
 import dev.gl.flagsandcapitals.utils.ButtonDocumentListener;
 import dev.gl.flagsandcapitals.utils.ButtonFilter;
 import dev.gl.flagsandcapitals.utils.ButtonFocusListener;
@@ -68,10 +70,12 @@ public class GameBoardPanel extends javax.swing.JPanel {
     private HiddenHintAbstractListener hiddenHintListener;
     private static Border regularTextFieldBorder;
     private JLabel capitalLabel;
+    private PopupManager popupManager;
 
     public GameBoardPanel(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
         initComponents();
+        popupManager = new PopupManager(answerButton, mainWindow);
     }
 
     public void setGameModel(GameModel gameModel) {
@@ -376,6 +380,10 @@ public class GameBoardPanel extends javax.swing.JPanel {
     public void showAnswerNotReadyMessage() {
         String message = Configuration.getResourceBundle().getString("answerNotPreparedMessage");
         showPopup(answerButton, message, 2, 200, 30, 500, 1000);
+    }
+    
+    public void showAchievementPopup(Achievement ach) {
+        popupManager.showAchievementPopup(ach);
     }
 
     public boolean areAllLettersFilled() {

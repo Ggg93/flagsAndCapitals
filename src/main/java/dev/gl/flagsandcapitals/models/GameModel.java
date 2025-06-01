@@ -3,6 +3,7 @@ package dev.gl.flagsandcapitals.models;
 import dev.gl.flagsandcapitals.db.common.HyperConnection;
 import dev.gl.flagsandcapitals.db.entities.DbGames;
 import dev.gl.flagsandcapitals.db.entities.DbGeography;
+import dev.gl.flagsandcapitals.enums.Achievement;
 import dev.gl.flagsandcapitals.enums.Difficulty;
 import dev.gl.flagsandcapitals.enums.GameMode;
 import dev.gl.flagsandcapitals.enums.LetterButtonState;
@@ -40,6 +41,7 @@ public class GameModel {
     private Boolean isGameFinished = false;
     private Integer guessedFlags;
     private Integer guessedCapitals;
+    private AchievementsModel achievementsModel;
 
     public GameModel(MainWindow mw, Region region) {
         this.mw = mw;
@@ -65,6 +67,8 @@ public class GameModel {
                 null,
                 guessedFlags,
                 guessedCapitals);
+        
+        achievementsModel = new AchievementsModel(game);
     }
 
     public void setGameBoardPanel(GameBoardPanel gameBoardPanel) {
@@ -93,6 +97,8 @@ public class GameModel {
         // block answer button
         gameBoardPanel.setAnswerButtonEnabled(false);
         gameBoardPanel.getMainWindow().setMainMenuButtonFocused();
+        
+        checkAchievementConditions();
     }
 
     private void win() {
@@ -110,6 +116,8 @@ public class GameModel {
         // block answer button
         gameBoardPanel.setAnswerButtonEnabled(false);
         gameBoardPanel.getMainWindow().setMainMenuButtonFocused();
+        
+        checkAchievementConditions();
     }
 
     public GameMode getGameMode() {
@@ -214,6 +222,9 @@ public class GameModel {
         }
 
         // checkAchievements
+        checkAchievementConditions();
+        
+        // preparing gameBoardPanel before next question
         LetterButtonState state = isAnswerRight
                 ? LetterButtonState.OK
                 : LetterButtonState.WRONG;
@@ -240,6 +251,13 @@ public class GameModel {
 
     public String getScore() {
         return game.getScore().toString();
+    }
+
+    private void checkAchievementConditions() {
+        List<Achievement> newAchievements = achievementsModel.checkAchievementCondtions();
+        for (Achievement ach : newAchievements) {
+            gameBoardPanel.showAchievementPopup(ach);
+        }
     }
 
 }

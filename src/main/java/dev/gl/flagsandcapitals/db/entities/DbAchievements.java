@@ -4,6 +4,7 @@ import dev.gl.flagsandcapitals.db.common.HyperConnection;
 import dev.gl.flagsandcapitals.enums.Achievement;
 import dev.gl.flagsandcapitals.utils.DateUtils;
 import dev.gl.flagsandcapitals.utils.logging.Logging;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
@@ -54,6 +55,32 @@ public class DbAchievements {
             LOGGER.log(Level.SEVERE, null, e);
         }
         return rowsById;
+    }
+    
+    public static void updateRow(DbAchievements ach, HyperConnection con) {
+        if (con == null) {
+            return;
+        }
+        
+        String sql = """
+                     UPDATE ACHIEVEMENTS
+                     SET code = ?,
+                        name = ?,
+                        achieved_date = ?
+                     WHERE id = ?
+                     """;
+        
+        try (PreparedStatement pstmt = con.getCon().prepareStatement(sql)){
+            pstmt.setInt(1, ach.getAchievement().getCode());
+            pstmt.setString(2, ach.getAchievement().getName());
+            pstmt.setDate(3, DateUtils.converLocalDateToDate(ach.getAchievedDate()));
+            pstmt.setInt(4, ach.getId());
+            
+            int affectedRows = pstmt.executeUpdate();
+            LOGGER.info("affected rows: " + affectedRows);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, null, e);
+        }
     }
 
     public Integer getId() {
